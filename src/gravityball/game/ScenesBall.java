@@ -31,6 +31,5 @@ public class ScenesBall
 	}
 	
 	public void timeEval(int from, int to) {
-		
 	}
 }
