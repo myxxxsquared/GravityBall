@@ -1,5 +1,7 @@
 package gravityball.game;
 
+import com.jogamp.opengl.GL2;
+
 import glm.mat._4.Mat4;
 
 public class Quaternion {
@@ -28,9 +30,8 @@ public class Quaternion {
 		return null;
 	}
 	
-	public Mat4 toMat4() {
-		// TODO 四元数化为矩阵
-		return null;
+	public void glRotate(GL2 gl) {
+		// TODO 四元数旋转
 	}
 
 	@Override

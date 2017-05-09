@@ -1,6 +1,9 @@
 package gravityball.game;
 
 import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLArrayData;
+import com.jogamp.opengl.util.GLArrayDataWrapper;
 
 public class ScenesBall
 {
@@ -26,8 +29,32 @@ public class ScenesBall
 	/** 转动惯量 */
 	public float momentOfInertia;
 	
-	public void paint(GL gl) {
+	/** 半径 */
+	public float radius;
+	
+	public void paint(GL2 gl2) {
 		// TODO 绘制
+		gl2.glMatrixMode(GL2.GL_MODELVIEW);
+		gl2.glPushMatrix();
+		gl2.glLoadIdentity();
+		
+		gl2.glTranslatef(locationX, locationY, locationZ);
+		angular.glRotate(gl2);
+		
+		gl2.glPopMatrix();
+	}
+	
+	public ScenesBall()
+	{
+		//以下为测试代码
+		locationX = 0;
+		locationY = 0;
+		locationZ = 0.2f;
+		radius = 0.2f;
+	}
+	
+	public void loadFromFile(Object JSONObject) {
+		
 	}
 	
 	public void timeEval(int from, int to) {

@@ -34,6 +34,21 @@ public class Scenes {
 	public int getScore() { return score; }
 	public void addScore(int score) { this.score += score; }
 	
+	public Scenes()
+	{
+		status = ScenesStatus.NOT_INITED;
+		
+		//以下代码为测试临时代码
+		width = 2;
+		height = 2;
+		ball = new ScenesBall();
+		objects = new ArrayList<>();
+		lastEvalTime = new Date();
+		millionsecond = 0;
+		speed = 0;
+		status = ScenesStatus.PLAYING;
+	}
+	
 	public void paint(GL2 gl) {
 		
 	}
