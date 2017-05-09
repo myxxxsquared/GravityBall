@@ -10,5 +10,4 @@ public class Program {
 		MainWindow mainWindow = new MainWindow();
 		mainWindow.setVisible(true);
 	}
-//
 }
