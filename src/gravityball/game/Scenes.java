@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.stream.Stream;
 
 import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
 
 public class Scenes {
 	enum ScenesStatus {
@@ -33,7 +34,7 @@ public class Scenes {
 	public int getScore() { return score; }
 	public void addScore(int score) { this.score += score; }
 	
-	public void paint(GL gl) {
+	public void paint(GL2 gl) {
 		
 	}
 	
