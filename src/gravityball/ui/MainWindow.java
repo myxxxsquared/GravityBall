@@ -1,37 +1,81 @@
 package gravityball.ui;
 
 import java.awt.BorderLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
-import com.jogamp.opengl.GLCapabilities;
+import com.jme3.system.AppSettings;
+import com.jme3.system.JmeCanvasContext;
+
+import gravityball.game.Scenes;
 
 public class MainWindow extends JFrame {
-
-	GamePanel gamePanel;
+	
+	private AppSettings settings;
+	private Scenes scenes;
 	
 	public MainWindow() {
-		// TODO 生成UI
+		settings = new AppSettings(true);
+		settings.setResolution(800, 600);
+		settings.setSamples(8);
+		settings.setEmulateMouse(false);
+		settings.setFrameRate(10000);
+		settings.setUseInput(false);
+		
+		scenes = new Scenes();
+		scenes.setSettings(settings);
+		scenes.createCanvas();
+		
+		scenes.setDisplayStatView(false);
+		scenes.setDisplayFps(false);
+		
+		JmeCanvasContext ctx = (JmeCanvasContext) scenes.getContext();
+		ctx.setSystemListener(scenes);
+		Dimension dim = new Dimension(640, 480);
+		ctx.getCanvas().setPreferredSize(dim);
+		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setSize(800, 600);
+		final Canvas c = ctx.getCanvas();
 		
-		GLCapabilities caps = new GLCapabilities(null);
-		caps.setSampleBuffers(true);
-		caps.setNumSamples(8);
-		caps.setDoubleBuffered(true);
 		
-		gamePanel = new GamePanel(caps);
-		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add(gamePanel, BorderLayout.CENTER);
-		
-		this.addWindowListener(new WindowAdapter() {
-
+		JButton button = new JButton("Start!");
+		button.addActionListener(new ActionListener() {
 			@Override
-			public void windowClosing(WindowEvent e) {
-				super.windowClosing(e);
-				System.exit(0);
+			public void actionPerformed(ActionEvent e) {
+				if(!thisenabled)
+				{
+					getContentPane().add(c, BorderLayout.CENTER);
+					scenes.enqueue(new Runnable() {
+						@Override
+						public void run() {
+							scenes.gameStart();
+						}
+					});
+				}
+				else
+				{
+					getContentPane().remove(c);
+					scenes.gamePause();
+				}
+				thisenabled  = ! thisenabled;
 			}
 		});
+		
+		jLabel = new JLabel("Time:");
+		
+		getContentPane().add(jLabel, BorderLayout.SOUTH);
+		getContentPane().add(button, BorderLayout.NORTH);
 	}
+	
+	boolean thisenabled = false;
+	
+	public static JLabel jLabel;
 }

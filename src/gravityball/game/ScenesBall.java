@@ -1,9 +1,10 @@
 package gravityball.game;
 
-import com.jogamp.opengl.GL;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLArrayData;
-import com.jogamp.opengl.util.GLArrayDataWrapper;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Sphere;
 
 public class ScenesBall
 {
@@ -32,31 +33,54 @@ public class ScenesBall
 	/** 半径 */
 	public float radius;
 	
-	public void paint(GL2 gl2) {
-		// TODO 绘制
-		gl2.glMatrixMode(GL2.GL_MODELVIEW);
-		gl2.glPushMatrix();
-		gl2.glLoadIdentity();
-		
-		gl2.glTranslatef(locationX, locationY, locationZ);
-		angular.glRotate(gl2);
-		
-		gl2.glPopMatrix();
-	}
-	
-	public ScenesBall()
+	private Scenes scenes;
+	public Scenes getScenes() { return scenes; }
+
+	public ScenesBall(Scenes scenes)
 	{
+		this.scenes = scenes;
+		
 		//以下为测试代码
 		locationX = 0;
 		locationY = 0;
-		locationZ = 0.2f;
-		radius = 0.2f;
+		locationZ = 0.1f;
+		radius = 0.1f;
 	}
 	
 	public void loadFromFile(Object JSONObject) {
 		
 	}
 	
-	public void timeEval(int from, int to) {
+	public void timeEval(float tpf) {
+		this.locationX += tpf * 0.1;
+		this.angular = this.angular.mult(new Quaternion(new float[]{0.f, 0.f, 0.2f * tpf}));
+		updateSphere();
+	}
+	
+	private Geometry sphereGeo;
+	
+	private void updateSphere() {
+		sphereGeo.setLocalRotation(angular);
+		sphereGeo.setLocalTranslation(locationX, locationY, locationZ);
+	}
+	
+	public void initObject() {
+	    Sphere sphereMesh = new Sphere(32,32, radius);
+	    sphereGeo = new Geometry("Ball", sphereMesh);
+	    sphereMesh.setTextureMode(Sphere.TextureMode.Projected);
+	    Material sphereMat = new Material(scenes.getAssetManager(),
+	        "Common/MatDefs/Light/Lighting.j3md");
+	    sphereMat.setTexture("DiffuseMap",
+	        scenes.getAssetManager().loadTexture("Textures/Terrain/Pond/Pond.jpg"));
+	    sphereMat.setBoolean("UseMaterialColors",true);
+	    sphereMat.setColor("Diffuse",ColorRGBA.White);
+	    sphereMat.setColor("Specular",ColorRGBA.White);
+	    sphereMat.setFloat("Shininess", 64f);  // [0,128]
+	    sphereGeo.setMaterial(sphereMat);
+	    scenes.getRootNode().attachChild(sphereGeo);
+	    
+	    this.angular = new Quaternion();
+	    
+	    updateSphere();
 	}
 }

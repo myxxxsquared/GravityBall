@@ -1,23 +1,26 @@
 package gravityball.game;
 
-import com.jogamp.opengl.GL;
+public class Wall extends ScenesObject {
 
-public class Final extends ScenesObject {
+	public Wall(Scenes scenes) {
+		super(scenes);
+	}
 
 	@Override
-	public void paint(GL gl) {
+	public void init() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void collisionDetect(Scenes scenes) {
+	public void collisionDetect() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void timeEval(ScenesBall ball, int from, int to) {
+	public void timeUpdate(float tpf) {
+	
 		// TODO Auto-generated method stub
 
 	}

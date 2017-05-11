@@ -1,17 +1,34 @@
 package gravityball.game;
 
-import com.jogamp.opengl.GL;
+import com.jme3.scene.Node;
 
 public abstract class ScenesObject
 {
-	/** 绘制到场景 */
-	public abstract void paint(GL gl);
+	/** 物体节点 */
+	protected Node objNode;
+	public Node getObjNode() { return objNode; }
+	
+	protected Scenes scenes;
+	public Scenes getScenes() { return scenes; }
+	
+	public ScenesObject(Scenes scenes) {
+		this.scenes = scenes;
+	}
+	
+	public void initObject() {
+		objNode = new Node();
+		scenes.getRootNode().attachChild(objNode);
+		init();
+	}
+	
+	/** 初始化，绘制到场景 */
+	public abstract void init();
 	
 	/** 碰撞检测  */
-	public abstract void collisionDetect(Scenes scenes);
+	public abstract void collisionDetect();
 	
 	/** 时间演化 */
-	public abstract void timeEval(ScenesBall ball, int from, int to);
+	public abstract void timeUpdate(float tpf);
 	
 	/** 从文件加载 */
 	public abstract void loadFromFile(Object JSONObj);
