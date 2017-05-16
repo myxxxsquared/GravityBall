@@ -10,11 +10,12 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.jme3.shadow.EdgeFilteringMode;
 import com.jme3.system.JmeCanvasContext;
 
+import gravityball.Program;
 import gravityball.ui.MainWindow;
 
 public class Scenes extends SimpleApplication {
@@ -116,15 +117,23 @@ public class Scenes extends SimpleApplication {
 	private AmbientLight alight;
 	
 	public void updateLightCamera() {
-		dlight.setDirection(new Vector3f(1,0,-2).normalizeLocal());
+		Quaternion q = new Quaternion();
+		
+		double div = Math.sqrt(ball.slopeX * ball.slopeX + ball.slopeY * ball.slopeY);
+		float angular = (float) Math.atan(div);
+
+		if(Math.abs(angular) > 0.001)
+			q.fromAngleNormalAxis(angular, new Vector3f(ball.slopeY, -ball.slopeX, 0.f).normalize());
+				
+		dlight.setDirection(q.mult(new Vector3f(1,0,-2).normalizeLocal()));
 		dlight.setColor(new ColorRGBA(0.5f,0.5f,0.5f,1.0f));
 		
 		alight.setColor(new ColorRGBA(0.5f,0.5f,0.5f,1.0f));
 	    
 	    rootNode.setShadowMode(com.jme3.renderer.queue.RenderQueue.ShadowMode.CastAndReceive);
 	    
-		cam.setLocation(new Vector3f(0.f, -1.5f, 2.5f));
-		cam.lookAt(new Vector3f(0.f, 0.f, 0.f), new Vector3f(0.f, 0.f, 1.f));		
+		cam.setLocation(q.mult(new Vector3f(0.f, -1.5f, 2.5f)));
+		cam.lookAt(new Vector3f(0.f, 0.f, 0.f), q.mult(new Vector3f(0.f, 0.f, 1.f)));		
 		Dimension dimension = ((JmeCanvasContext)getContext()).getCanvas().getSize();
 		cam.setFrustumPerspective(45.f, (float)dimension.width / (float)dimension.height , 0.1f, 5.f);
 		cam.update();
@@ -136,10 +145,10 @@ public class Scenes extends SimpleApplication {
 		
 		updateLightCamera();
 		
-	    final int SHADOWMAP_SIZE = 4096;
-	    DirectionalLightShadowRenderer dlsr = new DirectionalLightShadowRenderer(assetManager, SHADOWMAP_SIZE, 4);
+	    final int SHADOWMAP_SIZE = Program.SHADOW_MAP_SIZE;
+	    DirectionalLightShadowRenderer dlsr = new DirectionalLightShadowRenderer(assetManager, SHADOWMAP_SIZE, Program.SHADOW_SPLITS);
 	    dlsr.setLight(dlight);
-	    dlsr.setEdgeFilteringMode(EdgeFilteringMode.PCF8);
+	    dlsr.setEdgeFilteringMode(Program.SHADOW_MODE);
 	    
 	    viewPort.addProcessor(dlsr);
 	    
@@ -171,6 +180,8 @@ public class Scenes extends SimpleApplication {
 				scenesObject.timeUpdate(tpf);
 			}
 		}
+		
+		updateLightCamera();
 	}
 
 }

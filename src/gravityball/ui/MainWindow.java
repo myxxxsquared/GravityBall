@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
 
+import gravityball.Program;
 import gravityball.game.Scenes;
 
 public class MainWindow extends JFrame {
@@ -30,9 +31,9 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		settings = new AppSettings(true);
 		settings.setResolution(800, 600);
-		settings.setSamples(8);
+		settings.setSamples(Program.NUMBER_SAMPLES);
 		settings.setEmulateMouse(false);
-		settings.setFrameRate(10000);
+		settings.setFrameRate(Program.FRAME_RATE);
 		settings.setUseInput(false);
 		
 		scenes = new Scenes();
