@@ -13,7 +13,7 @@ public class Program {
 	
 	public final static int NUMBER_SAMPLES = 8;
 	public final static int FRAME_RATE = 60;
-	public final static EdgeFilteringMode SHADOW_MODE = EdgeFilteringMode.PCF8;
-	public final static int SHADOW_MAP_SIZE = 512;
+	public final static EdgeFilteringMode SHADOW_MODE = EdgeFilteringMode.PCFPOISSON;
+	public final static int SHADOW_MAP_SIZE = 4096;
 	public final static int SHADOW_SPLITS = 2;
 }

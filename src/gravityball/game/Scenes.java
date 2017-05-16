@@ -212,10 +212,10 @@ public class Scenes extends SimpleApplication {
 		float x = point.x * 2.f / c.getWidth() - 1;
 		float y = 1 - point.y * 2.f / c.getHeight();
 		
-//		if(x<-1) x=-1;
-//		if(x>1) x=1;
-//		if(y<-1) y=-1;
-//		if(y>1) y=1;
+		if(x<-1) x=-1;
+		if(x>1) x=1;
+		if(y<-1) y=-1;
+		if(y>1) y=1;
 
 		ball.slopeX = x / 10;
 		ball.slopeY = y / 10;
