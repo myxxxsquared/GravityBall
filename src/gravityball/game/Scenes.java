@@ -1,7 +1,15 @@
 package gravityball.game;
 
+import java.awt.Canvas;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.IllegalComponentStateException;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.Window;
 import java.util.ArrayList;
+
+import javax.swing.JComponent;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -110,7 +118,6 @@ public class Scenes extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
-		
 	}
 	
 	private DirectionalLight dlight;
@@ -140,6 +147,7 @@ public class Scenes extends SimpleApplication {
 	}
 	
 	private void initObjects() {
+		
 		dlight = new DirectionalLight();
 		alight = new AmbientLight();
 		
@@ -164,8 +172,55 @@ public class Scenes extends SimpleApplication {
 		this.viewPort.setBackgroundColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 1.0f));
 	}
 	
+	public static void convertPointFromScreen(Point p,Component c) {
+        int x,y;
+
+        do {
+            if(c instanceof JComponent) {
+                x = c.getX();
+                y = c.getY();
+            }  else if(c instanceof java.awt.Window) {
+                try {
+                    Point pp = ((Window)c).getLocation();
+                    
+                    x = pp.x;
+                    y = pp.y;
+                } catch (IllegalComponentStateException icse) {
+                    x = c.getX();
+                    y = c.getY();
+                }
+            } else {
+                x = c.getX();
+                y = c.getY();
+            }
+
+            p.x -= x;
+            p.y -= y;
+
+            if(c instanceof java.awt.Window || c instanceof java.applet.Applet)
+                break;
+            c = c.getParent();
+        } while(c != null);
+    }
+	
 	@Override
 	public void simpleUpdate(float tpf) {
+		Point point = MouseInfo.getPointerInfo().getLocation();
+		Canvas c = ((JmeCanvasContext)getContext()).getCanvas();
+		convertPointFromScreen(point, c);
+		
+		float x = point.x * 2.f / c.getWidth() - 1;
+		float y = 1 - point.y * 2.f / c.getHeight();
+		
+//		if(x<-1) x=-1;
+//		if(x>1) x=1;
+//		if(y<-1) y=-1;
+//		if(y>1) y=1;
+
+		ball.slopeX = x / 10;
+		ball.slopeY = y / 10;
+		
+		
 		if(MainWindow.jLabel != null)
 		{
 			MainWindow.jLabel.setText(Float.toString(1/tpf));

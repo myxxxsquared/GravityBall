@@ -2,7 +2,6 @@ package gravityball.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -39,14 +38,13 @@ public class MainWindow extends JFrame {
 		scenes = new Scenes();
 		scenes.setSettings(settings);
 		scenes.createCanvas();
+
 		
 		scenes.setDisplayStatView(false);
 		scenes.setDisplayFps(false);
 		
-		JmeCanvasContext ctx = (JmeCanvasContext) scenes.getContext();
-		ctx.setSystemListener(scenes);
-		Dimension dim = new Dimension(640, 480);
-		ctx.getCanvas().setPreferredSize(dim);
+		final JmeCanvasContext ctx = (JmeCanvasContext) scenes.getContext();
+		//ctx.setSystemListener(scenes);
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -61,6 +59,7 @@ public class MainWindow extends JFrame {
 				if(!thisenabled)
 				{
 					getContentPane().add(c, BorderLayout.CENTER);
+					
 					scenes.enqueue(new Runnable() {
 						@Override
 						public void run() {
