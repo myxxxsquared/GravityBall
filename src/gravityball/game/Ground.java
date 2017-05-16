@@ -1,5 +1,7 @@
 package gravityball.game;
 
+import org.json.JSONObject;
+
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
@@ -13,18 +15,20 @@ public class Ground extends ScenesObject {
 
 	@Override
 	public void init() {
-		Box box = new Box(2.f, 2.f, 0.1f);
+		Box box = new Box(1.f, 1.f, 0.03f);
+		
 		Geometry geometry = new Geometry("Ground", box);
 		Material material = new Material(scenes.getAssetManager(),
 		        "Common/MatDefs/Light/Lighting.j3md");
 		material.setTexture("DiffuseMap",
-		        scenes.getAssetManager().loadTexture("Textures/Terrain/Pond/Pond.jpg"));
+		        scenes.getAssetManager().loadTexture("Textures/wood.jpg"));
 		material.setBoolean("UseMaterialColors",true);
 		material.setColor("Diffuse",ColorRGBA.White);
 		material.setColor("Specular",ColorRGBA.White);
+		material.setColor("Ambient",new ColorRGBA(1.5f, 1.5f, 1.5f, 1.f));
 		material.setFloat("Shininess", 64f);  // [0,128]
 		geometry.setMaterial(material);
-		geometry.setLocalTranslation(0.f, 0.f, -0.1f);
+		geometry.setLocalTranslation(0.f, 0.f, -0.03f);
 		objNode.attachChild(geometry);
 	}
 
@@ -41,7 +45,7 @@ public class Ground extends ScenesObject {
 	}
 
 	@Override
-	public void loadFromFile(Object JSONObj) {
+	public void loadFromFile(JSONObject j) {
 		// TODO Auto-generated method stub
 
 	}

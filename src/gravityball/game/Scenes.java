@@ -4,11 +4,15 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.shadow.DirectionalLightShadowRenderer;
+import com.jme3.shadow.EdgeFilteringMode;
 import com.jme3.system.JmeCanvasContext;
 
 import gravityball.ui.MainWindow;
@@ -41,16 +45,27 @@ public class Scenes extends SimpleApplication {
 		status = ScenesStatus.NOT_INITED;
 	}
 	
-	public void loadFromFile(Object JSONObject) {
+	public void loadFromFile(JSONObject j) {
 		if(!(this.status == ScenesStatus.NOT_INITED))
 			throw new RuntimeException("this.status == ScenesStatus.NOT_INITED");
 		
-		ball = null;
-		objects = null;
+		JSONObject jball = j.getJSONObject("ball");
+		JSONArray jobjects = j.getJSONArray("objects");
+		
 		time = 0.f;
 		speed = 1.f;
 		score = 0;
-
+		
+		ball = new ScenesBall(this);
+		ball.loadFromFile(jball);
+		objects = new ArrayList<>();
+		for (Object object : jobjects) {
+			JSONObject obj = (JSONObject) object;
+			ScenesObject newobj = ScenesObject.createScenesObject(obj.getString("name"), this);
+			newobj.loadFromFile(obj);
+			objects.add(newobj);
+		}
+		
 		this.status = ScenesStatus.READY;
 	}
 	public void gameReset() {
@@ -58,9 +73,9 @@ public class Scenes extends SimpleApplication {
 		
 		this.rootNode.detachAllChildren();
 		
-		if(this.light!=null)
-			this.rootNode.removeLight(this.light);
-		this.light = null;
+		if(this.dlight!=null)
+			this.rootNode.removeLight(this.dlight);
+		this.dlight = null;
 	}
 	public void gameStart() {
 		if(!(this.status == ScenesStatus.READY || this.status == ScenesStatus.PAUSED))
@@ -97,34 +112,51 @@ public class Scenes extends SimpleApplication {
 		
 	}
 	
-	private DirectionalLight light;
+	private DirectionalLight dlight;
+	private AmbientLight alight;
 	
 	public void updateLightCamera() {
-		cam.setLocation(new Vector3f(0.f, -1.f, 1.f));
+		dlight.setDirection(new Vector3f(1,0,-2).normalizeLocal());
+		dlight.setColor(new ColorRGBA(0.5f,0.5f,0.5f,1.0f));
+		
+		alight.setColor(new ColorRGBA(0.5f,0.5f,0.5f,1.0f));
+	    
+	    rootNode.setShadowMode(com.jme3.renderer.queue.RenderQueue.ShadowMode.CastAndReceive);
+	    
+		cam.setLocation(new Vector3f(0.f, -1.5f, 2.5f));
 		cam.lookAt(new Vector3f(0.f, 0.f, 0.f), new Vector3f(0.f, 0.f, 1.f));		
 		Dimension dimension = ((JmeCanvasContext)getContext()).getCanvas().getSize();
 		cam.setFrustumPerspective(45.f, (float)dimension.width / (float)dimension.height , 0.1f, 5.f);
 		cam.update();
-		
-		light.setDirection(new Vector3f(1,0,-2).normalizeLocal());
-	    light.setColor(ColorRGBA.White);
 	}
 	
 	private void initObjects() {
-		light = new DirectionalLight();
+		dlight = new DirectionalLight();
+		alight = new AmbientLight();
+		
 		updateLightCamera();
-	    getRootNode().addLight(light);
+		
+	    final int SHADOWMAP_SIZE = 4096;
+	    DirectionalLightShadowRenderer dlsr = new DirectionalLightShadowRenderer(assetManager, SHADOWMAP_SIZE, 4);
+	    dlsr.setLight(dlight);
+	    dlsr.setEdgeFilteringMode(EdgeFilteringMode.PCF8);
+	    
+	    viewPort.addProcessor(dlsr);
+	    
+	    getRootNode().addLight(dlight);
+	    getRootNode().addLight(alight);
 		
 		ball.initObject();
 		for (ScenesObject scenesObject : objects) {
 			scenesObject.initObject();
 		}
 		this.rootNode.updateGeometricState();
+		
+		this.viewPort.setBackgroundColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 1.0f));
 	}
 	
 	@Override
 	public void simpleUpdate(float tpf) {
-		
 		if(MainWindow.jLabel != null)
 		{
 			MainWindow.jLabel.setText(Float.toString(1/tpf));

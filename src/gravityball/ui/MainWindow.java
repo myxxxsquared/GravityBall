@@ -5,10 +5,17 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import org.json.JSONObject;
 
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
@@ -56,6 +63,7 @@ public class MainWindow extends JFrame {
 					scenes.enqueue(new Runnable() {
 						@Override
 						public void run() {
+							scenes.loadFromFile(new JSONObject(readall(".\\map\\map1.json")));
 							scenes.gameStart();
 						}
 					});
@@ -78,4 +86,26 @@ public class MainWindow extends JFrame {
 	boolean thisenabled = false;
 	
 	public static JLabel jLabel;
+	
+	static String readall(String filename) {
+		String encoding = "utf-8";
+		File file = new File(filename);
+		Long filelength = file.length();
+		byte[] filecontent = new byte[filelength.intValue()];
+		try(FileInputStream inputStream = new FileInputStream(file)) {
+			inputStream.read(filecontent);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			return new String(filecontent, encoding);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 }

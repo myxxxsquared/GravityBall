@@ -1,5 +1,7 @@
 package gravityball.game;
 
+import org.json.JSONObject;
+
 import com.jme3.scene.Node;
 
 public abstract class ScenesObject
@@ -31,11 +33,15 @@ public abstract class ScenesObject
 	public abstract void timeUpdate(float tpf);
 	
 	/** 从文件加载 */
-	public abstract void loadFromFile(Object JSONObj);
+	public abstract void loadFromFile(JSONObject j);
 	
-	public static ScenesObject createScenesObject(String name)
+	public static ScenesObject createScenesObject(String name, Scenes scenes)
 	{
 		switch(name) {
+		case "ground":
+			return new Ground(scenes);
+		case "wall":
+			return new Wall(scenes);
 		default:
 			return null;
 		}
