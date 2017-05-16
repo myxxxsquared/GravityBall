@@ -42,6 +42,8 @@ public abstract class ScenesObject
 			return new Ground(scenes);
 		case "wall":
 			return new Wall(scenes);
+		case "thorn":
+			return new Thron(scenes);
 		default:
 			return null;
 		}
