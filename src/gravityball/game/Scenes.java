@@ -26,12 +26,30 @@ import com.jme3.system.JmeCanvasContext;
 import gravityball.Program;
 import gravityball.ui.MainWindow;
 
+/** 描述一个场景 */
 public class Scenes extends SimpleApplication {
+	
+	/** 场景状态 */
 	enum ScenesStatus {
-		NOT_INITED, READY, PLAYING, PAUSED, END, WIN, LOSE
+		/**未初始化*/
+		NOT_INITED,
+		/**准备就绪，可以开始*/
+		READY,
+		/**正在游戏*/
+		PLAYING,
+		/**暂停*/
+		PAUSED,
+		/**游戏结束，未知是否获胜*/
+		END,
+		/**游戏获胜*/
+		WIN,
+		/**游戏失败*/
+		LOSE
 	}
 	
+	/**场景中的小球*/
 	private ScenesBall ball;
+	/**场景中的所有物体*/
 	private ArrayList<ScenesObject> objects;
 	
 	private float time;

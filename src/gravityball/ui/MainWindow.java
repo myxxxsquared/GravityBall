@@ -22,12 +22,18 @@ import com.jme3.system.JmeCanvasContext;
 import gravityball.Program;
 import gravityball.game.Scenes;
 
+/** 主窗口 */
 public class MainWindow extends JFrame {
 	
+	/** 程序设置 */
 	private AppSettings settings;
+
+	/** 程序场景 */
 	private Scenes scenes;
 	
 	public MainWindow() {
+		
+		//建立和修改设置
 		settings = new AppSettings(true);
 		settings.setResolution(800, 600);
 		settings.setSamples(Program.NUMBER_SAMPLES);
@@ -35,23 +41,20 @@ public class MainWindow extends JFrame {
 		settings.setFrameRate(Program.FRAME_RATE);
 		settings.setUseInput(false);
 		
+		//新建场景，修改设置
 		scenes = new Scenes();
 		scenes.setSettings(settings);
 		scenes.createCanvas();
-
-		
 		scenes.setDisplayStatView(false);
 		scenes.setDisplayFps(false);
 		
+		//将场景转化为Canvas
 		final JmeCanvasContext ctx = (JmeCanvasContext) scenes.getContext();
-		//ctx.setSystemListener(scenes);
-		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		setSize(800, 600);
 		final Canvas c = ctx.getCanvas();
 		
-		
+		//TODO 以下为临时测试代码
+		setSize(800, 600);
 		JButton button = new JButton("Start!");
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -83,10 +86,11 @@ public class MainWindow extends JFrame {
 		getContentPane().add(button, BorderLayout.NORTH);
 	}
 	
+	//临时测试变量
 	boolean thisenabled = false;
-	
 	public static JLabel jLabel;
 	
+	//临时测试函数
 	static String readall(String filename) {
 		String encoding = "utf-8";
 		File file = new File(filename);
