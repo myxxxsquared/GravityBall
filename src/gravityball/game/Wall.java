@@ -46,11 +46,41 @@ public class Wall extends ScenesObject {
 	@Override
 	public void collisionDetect() {
 		// TODO Auto-generated method stub
+				float length = (float) Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+				ScenesBall b = scenes.getBall();//取得球
+				//球边缘与墙边缘靠的比较近
+				//目前只考虑了宽面撞击，窄面撞击没考虑
+				if(y1 == y2){//这种会撞y墙
+				if(Math.abs(b.locationY- (y1+y2)/2) <= 0.115 && 
+						Math.abs(b.locationX - (x1+x2)/2) <= length/2+0.105){
+					if(b.slopeY >= 0 && b.locationY < (y1+y2)/2)//向上撞
+						b.collision_y = true;
+					else if(b.slopeY <= 0 && b.locationY > (y1+y2)/2)//向下撞
+						b.collision_y = true;
+					else b.collision_y = false;
+					}
+				else b.collision_y = false;
+				}
+				
+				if(x1 == x2){//这种会撞x墙
+				if(Math.abs(b.locationX- (x1+x2)/2) <= 0.115 && 
+						Math.abs(b.locationY - (y1+y2)/2) <= length/2+0.105){
+					if(b.slopeX >= 0 && b.locationX < (x1+x2)/2)//向右撞
+						b.collision_x = true;
+					else if(b.slopeX <= 0 && b.locationX > (x1+x2)/2)//向左撞
+						b.collision_x = true;
+					else b.collision_x = false;
+				}
+				else b.collision_x = false;
+				//阻止球在对应轴上的移动
+				}
+
 	}
 
 	@Override
 	public void timeUpdate(float tpf) {
 		// TODO Auto-generated method stub
+		collisionDetect();
 	}
 
 	@Override
