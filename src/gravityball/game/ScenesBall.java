@@ -47,6 +47,7 @@ public class ScenesBall {
 	}
 
 	public void loadFromFile(JSONObject j) {
+		// 从文件加载设置
 		this.locationX = (float) j.getDouble("locationX");
 		this.locationY = (float) j.getDouble("locationY");
 		this.locationZ = (float) j.getDouble("locationZ");
@@ -56,6 +57,7 @@ public class ScenesBall {
 		this.momentOfInertia = (float) j.getDouble("momentOfInertia");
 		this.radius = (float) j.getDouble("radius");
 
+		// 初始化运动参数
 		this.velocityX = 0.f;
 		this.velocityY = 0.f;
 		this.velocityZ = 0.f;
@@ -74,6 +76,7 @@ public class ScenesBall {
 	/** 小球几何体 */
 	private Spatial sphereGeo;
 
+	/** 更新小球的位置 */
 	private void updateSphere() {
 		sphereGeo.setLocalScale(radius);
 		sphereGeo.setLocalRotation(angular);
@@ -81,10 +84,12 @@ public class ScenesBall {
 	}
 
 	public void initObject() {
+		// 初始化球的几何体
 		Sphere sphereMesh = new Sphere(16, 16, 1.f);
 		sphereGeo = new Geometry("Shiny rock", sphereMesh);
 		sphereMesh.setTextureMode(Sphere.TextureMode.Projected);
 
+		// 初始化材质
 		Material sphereMat = new Material(scenes.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
 		sphereMat.setTexture("DiffuseMap", scenes.getAssetManager().loadTexture("Textures/Terrain/Pond/Pond.jpg"));
 		sphereMat.setBoolean("UseMaterialColors", true);
@@ -94,8 +99,10 @@ public class ScenesBall {
 		sphereMat.setFloat("Shininess", 64f); // [0,128]
 		sphereGeo.setMaterial(sphereMat);
 
+		// 添加到场景
 		scenes.getRootNode().attachChild(sphereGeo);
 
+		// 更新位置
 		updateSphere();
 	}
 }
