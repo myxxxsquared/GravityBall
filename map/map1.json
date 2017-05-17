@@ -48,6 +48,18 @@
 			"locationX" : "-0.5",
 			"locationY" : "-0.5",
 			"radius" : "0.1"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.5",
+			"locationY" : "-0.5",
+			"radius" : "0.1"
+		},
+		{
+			"name" : "final",
+			"locationX" : "-0.5",
+			"locationY" : "0.5",
+			"radius" : "0.1"
 		}
 	]
 }

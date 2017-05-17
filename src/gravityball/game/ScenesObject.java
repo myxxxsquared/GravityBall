@@ -56,6 +56,10 @@ public abstract class ScenesObject {
 			return new Wall(scenes);
 		case "thorn":
 			return new Thron(scenes);
+		case "coin":
+			return new Coin(scenes);
+		case "final":
+			return new Final(scenes);
 		default:
 			return null;
 		}
