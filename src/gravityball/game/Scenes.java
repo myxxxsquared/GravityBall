@@ -306,6 +306,8 @@ public class Scenes extends SimpleApplication {
 
 			// 时间演化
 			this.time += tpf;
+			for (ScenesObject scenesObject : objects)
+				scenesObject.collisionDetect();
 			ball.timeEval(tpf);
 			for (ScenesObject scenesObject : objects)
 				scenesObject.timeUpdate(tpf);

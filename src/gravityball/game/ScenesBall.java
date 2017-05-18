@@ -11,9 +11,6 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 
 public class ScenesBall {
-	/**	这两个变量用来判断球是否在这个轴发生与墙碰撞 */
-	public boolean collision_x = false;
-	public boolean collision_y = false;
 	/** 位置 */
 	public float locationX, locationY, locationZ;
 	/** 速度 */
@@ -126,25 +123,12 @@ public class ScenesBall {
 		double beta_x = (M_x + f_y * this.radius) / this.momentOfInertia;
 		double beta_y = (M_y - f_x * this.radius) / this.momentOfInertia;
 
-		// 计算速度		
-		//x轴撞墙与否
-		if(collision_x == true){
-			System.out.println(1);
-				this.velocityX *= -0.3f;
-		}
-		else{
-			this.velocityX += a_x * tpf;
-			this.angularVelocityX += beta_x * tpf;
-		}
-		//y轴撞墙与否
-		if(collision_y == true){
-			System.out.println(2);
-				this.velocityY *= -0.3f;
-		}
-		else{
-			this.velocityY += a_y * tpf;
-			this.angularVelocityY += beta_y * tpf;
-		}
+		// 计算速度
+		this.velocityX += a_x * tpf;
+		this.velocityY += a_y * tpf;
+		this.angularVelocityX += beta_x * tpf;
+		this.angularVelocityY += beta_y * tpf;
+
 		// 计算位置变化
 		this.locationX += this.velocityX * tpf;
 		this.locationY += this.velocityY * tpf;
