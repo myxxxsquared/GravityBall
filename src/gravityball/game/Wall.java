@@ -9,15 +9,28 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.plugins.blender.math.Matrix;
 import com.jme3.scene.shape.Box;
 
 public class Wall extends ScenesObject {
-	// 墙的两个顶点位置
+	/** 墙的两个顶点位置 */
 	public float x1, y1, x2, y2;
 
-	private float width;
-	private float height;
+	/** 墙面宽度 */
+	public float width;
+
+	/** 墙面高度 */
+	public float height;
+
+	/** 墙面长度 */
+	public float length;
+
+	/** 从全局坐标到局部坐标的变换矩阵 */
+	public Matrix3f matTransport;
+
+	/** 弹性系数 */
+	public float e;
+
+	public final static float MOVE_ADD_DELTA = 0.001f;
 
 	public Wall(Scenes scenes) {
 		super(scenes);
@@ -49,7 +62,8 @@ public class Wall extends ScenesObject {
 		this.objNode.attachChild(geoWall);
 	}
 
-	public static Matrix3f 生成方向矩阵(float tx, float ty, float x, float y) {
+	/** 生成 一个以x,y为原点，以tx,ty为x轴的变换矩阵 */
+	public static Matrix3f genTransportMatrix(float tx, float ty, float x, float y) {
 		Vector2f t_e = new Vector2f(tx, ty).normalize();
 		Vector2f n_e = new Vector2f(ty, -tx).normalize();
 		Matrix3f mat_tn = new Matrix3f(t_e.x, t_e.y, 0, n_e.x, n_e.y, 0, 0, 0, 1);
@@ -58,53 +72,56 @@ public class Wall extends ScenesObject {
 	}
 
 	@Override
-	public void collisionDetect() {		
+	public void collisionDetect() {
 		ScenesBall ball = scenes.getBall();
-		final float wall_length = (float) Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 
-		Matrix3f mat = 生成方向矩阵(x2 - x1, y2 - y1, x1, y1);
-		Vector3f locball_loc = mat.mult(new Vector3f(ball.locationX, ball.locationY, 1));
+		// 局部坐标
+		Vector3f ballPointLocal = this.matTransport.mult(new Vector3f(ball.locationX, ball.locationY, 1));
 
-		if (Math.abs(locball_loc.y) < ball.radius + this.width) {
+		// 在局部坐标下判断是否碰撞
+		if (Math.abs(ballPointLocal.y) < ball.radius + this.width) {
+			// 指示是否真的发生碰撞
 			boolean bump = false;
-			Matrix3f A = null, Ainv = null;
 
-			if (locball_loc.x > 0 && locball_loc.x < wall_length) {				
+			// 碰撞的局部-全局转换矩阵
+			Matrix3f trans = null;
+
+			if (ballPointLocal.x > 0 && ballPointLocal.x < this.length) { // 如果和墙面碰撞
 				bump = true;
-				A = mat;
-				Ainv = mat.invert();
-			} 
-			else if (locball_loc.x > -(ball.radius + this.width) && x1 <= 0) {
-				A = 生成方向矩阵(ball.locationY - y1, -ball.locationX + x1, x1, y1);
-				Ainv = A.invert();
-				locball_loc = A.mult(new Vector3f(ball.locationX, ball.locationY, 1));
-				if(Math.abs(locball_loc.y) < ball.radius + this.width)
+				trans = this.matTransport;
+			} else if (ballPointLocal.x > -(ball.radius + this.width) && ballPointLocal.x <= 0) { // 如果和第一个墙边碰撞
+				trans = genTransportMatrix(ball.locationY - y1, -ball.locationX + x1, x1, y1);
+				ballPointLocal = trans.mult(new Vector3f(ball.locationX, ball.locationY, 1));
+				if (Math.abs(ballPointLocal.y) < ball.radius + this.width)
 					bump = true;
-			} else if (locball_loc.x >= wall_length && x1 < wall_length + ball.radius + this.width) {
-				A = 生成方向矩阵(ball.locationY - y2, -ball.locationX + x2, x2, y2);
-				Ainv = A.invert();
-				locball_loc = A.mult(new Vector3f(ball.locationX, ball.locationY, 1));
-				if(Math.abs(locball_loc.y) < ball.radius + this.width)
+			} else if (ballPointLocal.x >= this.length && ballPointLocal.x < this.length + ball.radius + this.width) { // 如果和第二个墙边碰撞
+				trans = genTransportMatrix(ball.locationY - y2, -ball.locationX + x2, x2, y2);
+				ballPointLocal = trans.mult(new Vector3f(ball.locationX, ball.locationY, 1));
+				if (Math.abs(ballPointLocal.y) < ball.radius + this.width)
 					bump = true;
 			}
 
 			if (bump) {
-				Vector3f mult = A.mult(new Vector3f(ball.velocityX, ball.velocityY, 0.f));
+				// 将速度转化到局部坐标
+				Vector3f ballVecLocal = trans.mult(new Vector3f(ball.velocityX, ball.velocityY, 0.f));
+				Matrix3f transInv = trans.invert();
 
-				if (locball_loc.y > 0) {
-					locball_loc.y = ball.radius + this.width + 0.001f;
+				// 处理球的位置，防止球进入墙内部（多增加一个小量，防止浮点数计算错误）
+				if (ballPointLocal.y > 0) {
+					ballPointLocal.y = ball.radius + this.width + MOVE_ADD_DELTA;
 				} else {
-					locball_loc.y = -(ball.radius + this.width) - 0.001f;
+					ballPointLocal.y = -(ball.radius + this.width + MOVE_ADD_DELTA);
 				}
-				Vector3f ballrec = Ainv.mult(locball_loc);
+				Vector3f ballrec = transInv.mult(ballPointLocal);
 				ball.locationX = ballrec.x;
 				ball.locationY = ballrec.y;
 
-				if (mult.y > 0 && locball_loc.y < 0 || mult.y < 0 && locball_loc.y > 0) {
-					mult.y *= -0.3;
-					mult = Ainv.mult(mult);
-					ball.velocityX = mult.x;
-					ball.velocityY = mult.y;
+				// 更新球的速度，更新前判断速度方向
+				if (ballVecLocal.y > 0 && ballPointLocal.y < 0 || ballVecLocal.y < 0 && ballPointLocal.y > 0) {
+					ballVecLocal.y *= this.e;
+					ballVecLocal = transInv.mult(ballVecLocal);
+					ball.velocityX = ballVecLocal.x;
+					ball.velocityY = ballVecLocal.y;
 				}
 			}
 		}
@@ -123,8 +140,14 @@ public class Wall extends ScenesObject {
 		this.y1 = (float) j.getDouble("y1");
 		this.y2 = (float) j.getDouble("y2");
 
+		this.e = -0.5f;
+
 		this.width = 0.01f;
 		this.height = 0.08f;
+		this.length = (float) Math
+				.sqrt((this.x2 - this.x1) * (this.x2 - this.x1) + (this.y2 - this.y1) * (this.y2 - this.y1));
+
+		this.matTransport = genTransportMatrix(x2 - x1, y2 - y1, x1, y1);
 	}
 
 }
