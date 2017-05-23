@@ -165,7 +165,7 @@ public class Scenes extends SimpleApplication {
 	public void gameStart() {
 		if (!(this.status == ScenesStatus.READY || this.status == ScenesStatus.PAUSED))
 			throw new RuntimeException("this.status == ScenesStatus.READY || this.status == ScenesStatus.PAUSED");
-
+		this.audioBackground.play();
 		this.status = ScenesStatus.PLAYING;
 	}
 
