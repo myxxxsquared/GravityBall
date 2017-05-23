@@ -1,5 +1,6 @@
 package gravityball.game;
 
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -10,6 +11,8 @@ import java.awt.Window;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -167,14 +170,24 @@ public class Scenes extends SimpleApplication {
 			throw new RuntimeException("this.status == ScenesStatus.PLAYING");
 		this.status = ScenesStatus.PAUSED;
 	}
-
+	
+	private static JLabel win_label = new JLabel("                                       You win!!!");
+	private static JFrame win_window = new JFrame();
 	/** 游戏获胜 */
 	public void gameWin() {
 		if (!(this.status == ScenesStatus.PLAYING))
 			throw new RuntimeException("this.status == ScenesStatus.PLAYING");
 		this.status = ScenesStatus.WIN;
+		win_window.setSize(300, 200);
+		win_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		win_window.setLocation(400, 200);
+		win_window.getContentPane().add(win_label, BorderLayout.CENTER);
+		win_window.setVisible(true);
 	}
 
+	private static JLabel lose_label = new JLabel("                                       You lose!!!");
+	private static JFrame lose_window = new JFrame();
+	private static boolean lose_window_vis = false;
 	/** 游戏失败 */
 	public void gameLose() {
 		if (!(this.status == ScenesStatus.PLAYING))
@@ -312,9 +325,24 @@ public class Scenes extends SimpleApplication {
 			for (ScenesObject scenesObject : objects)
 				scenesObject.timeUpdate(tpf);
 		}
+		else if(this.status == ScenesStatus.LOSE && ball.locationZ >= -0.1f){
+			//球缓缓下沉
+			this.time += tpf;
+			ball.Drop(tpf);
+			for (ScenesObject scenesObject : objects)
+				scenesObject.timeUpdate(tpf);
+		}
+		else if(ball.locationZ < -0.1f && lose_window_vis == false){
+			lose_window_vis = true;
+			lose_window.setSize(300, 200);
+			lose_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			lose_window.setLocation(400, 200);
+			lose_window.getContentPane().add(lose_label, BorderLayout.CENTER);
+			lose_window.setVisible(true);
+		}
 
 		// 刷新摄像机和灯光
 		updateLightCamera();
 	}
-
+	
 }

@@ -11,6 +11,8 @@ public class Program {
 	public static void main(String[] args) {
 		MainWindow mainWindow = new MainWindow();
 		mainWindow.setVisible(true);
+		mainWindow.setLocation(340, 100);
+		
 	}
 	
 	/** 采样次数 */
@@ -22,5 +24,5 @@ public class Program {
 	/** 阴影贴图大小 */
 	public final static int SHADOW_MAP_SIZE = 4096;
 	/** 阴影采样分割次数 */
-	public final static int SHADOW_SPLITS = 2;
+	public final static int SHADOW_SPLITS = 1;
 }

@@ -52,6 +52,14 @@ public class Thron extends ScenesObject {
 	@Override
 	public void collisionDetect() {
 		// TODO Auto-generated method stub
+		ScenesBall ball = scenes.getBall();
+		//判断是否与小球相碰
+		float distence = (float) Math.sqrt((ball.locationX-this.locationX)*(ball.locationX-this.locationX) + 
+				(ball.locationY-this.locationY)*(ball.locationY-this.locationY));
+		if(distence <= ball.radius + 0.002){
+			ball.setThron(this.locationX, this.locationY);//把这个刺的坐标传给球
+			scenes.gameLose();
+		}
 	}
 
 	@Override

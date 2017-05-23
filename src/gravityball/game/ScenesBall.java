@@ -85,7 +85,49 @@ public class ScenesBall {
 		this.under_f = -1 - this.mass * Math.pow(this.radius, 2) / this.momentOfInertia;
 		this.under_m = this.momentOfInertia / this.mass + this.radius * this.radius;
 	}
+	
+	/**用来确定球掉进了哪个洞里 */
+	private float thron_x, thron_y;
+	/**用来设定球掉进了哪个洞里 */
+	public void setThron(float x, float y){
+		thron_x = x;
+		thron_y = y;
+	}
+	
+	/**球掉落进洞里 */
+	public void Drop(float tpf){
+		if(this.radius >= 0.02f)	
+			this.radius *= (1-tpf*0.3);//球缩小
+		
+		if(Math.abs(this.locationX - thron_x) >= 0.002f){
+			if(this.locationX > thron_x)
+				this.locationX -= 0.05*tpf;
+			else this.locationX += 0.05*tpf;
+		}//滚向中心
+		if(Math.abs(this.locationY - thron_y) >= 0.002f){
+			if(this.locationY > thron_y)
+				this.locationY -= 0.05*tpf;
+			else this.locationY += 0.05*tpf;
+		}//滚向中心
+		
+		this.locationZ -= 0.05*tpf;//下落
+		
+		this.angularVelocityX *= 0.99f;
+		this.angularVelocityY *= 0.99f;
+		this.angularVelocityZ *= 0.99f;
+		// 计算角度变化
+		Quaternion quaternion = new Quaternion();
+		double angle = tpf * Math.sqrt(this.angularVelocityX * this.angularVelocityX
+				+ this.angularVelocityY * this.angularVelocityY + this.angularVelocityZ * this.angularVelocityZ);
+		if (angle > 0.001)
+			quaternion.fromAngleAxis((float) angle,
+					new Vector3f(this.angularVelocityX, this.angularVelocityY, this.angularVelocityZ).normalize());
+		this.angular = quaternion.mult(this.angular);
 
+		//更新几何体位置
+		updateSphere();		
+	}
+	
 	public void timeEval(float tpf) {
 		// 计算受力
 		double F_x = this.g * this.slopeX - this.alpha_v * this.velocityX;
@@ -178,4 +220,5 @@ public class ScenesBall {
 		// 更新位置
 		updateSphere();
 	}
+	
 }

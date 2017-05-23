@@ -11,7 +11,7 @@ public class Final extends ScenesObject {
 	/** 位置和半径 */
 	private float locationX, locationY, radius;
 
-	/** 硬币的几何体 */
+	/** 终点的几何体 */
 	private Spatial geoCoin;
 
 	public Final(Scenes scenes) {
@@ -44,6 +44,13 @@ public class Final extends ScenesObject {
 	@Override
 	public void collisionDetect() {
 		// TODO Auto-generated method stub
+		ScenesBall ball = scenes.getBall();
+		//判断是否与小球相碰
+		float distence = (float) Math.sqrt((ball.locationX-this.locationX)*(ball.locationX-this.locationX) + 
+				(ball.locationY-this.locationY)*(ball.locationY-this.locationY));
+		if(distence <= ball.radius + 0.01){
+			this.scenes.gameWin();
+		}
 	}
 
 	@Override

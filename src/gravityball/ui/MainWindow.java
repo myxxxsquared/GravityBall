@@ -81,6 +81,7 @@ public class MainWindow extends JFrame {
 
 		getContentPane().add(jLabel, BorderLayout.SOUTH);
 		getContentPane().add(button, BorderLayout.NORTH);
+		
 	}
 
 	// 临时测试变量
