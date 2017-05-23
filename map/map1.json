@@ -1,4 +1,5 @@
 {
+	"background_sound" : "Sound/back1.ogg",
 	"ball" : {
 		"radius" : "0.1",
 		"locationX" : "0",
@@ -7,7 +8,7 @@
 		"g" : "9.0",
 		"mass" : "1",
 		"miu" : "0.5",
-		"momentOfInertia" : "0.02",
+		"momentOfInertia" : "0.001",
 		"alpha_v" : "0.03",
 		"alpha_m" : "0.03"
 	},
@@ -72,6 +73,84 @@
 			"name" : "coin",
 			"locationX" : "0.5",
 			"locationY" : "-0.3",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "0.9",
 			"radius" : "0.05"
 		},
 		{
