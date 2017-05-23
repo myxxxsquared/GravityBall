@@ -52,33 +52,41 @@ public class MainWindow extends JFrame {
 
 		// TODO 以下为临时测试代码
 		setSize(800, 600);
-		JButton button = new JButton("Start!");
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!thisenabled) {
-					getContentPane().add(c, BorderLayout.CENTER);
 
-					scenes.enqueue(new Runnable() {
-						@Override
-						public void run() {
-							scenes.loadFromFile(
-									new JSONObject(readall(MainWindow.class.getResourceAsStream("/Maps/map1.json"))));
-							scenes.gameStart();
-						}
-					});
-				} else {
-					getContentPane().remove(c);
-					scenes.gamePause();
+		{
+			JButton button = new JButton("Start2!");
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (!thisenabled) {
+						getContentPane().add(c, BorderLayout.CENTER);
+
+						scenes.enqueue(new Runnable() {
+							@Override
+							public void run() {
+								scenes.loadFromFile(new JSONObject(
+										readall(MainWindow.class.getResourceAsStream("/Maps/map1.json"))));
+								scenes.gameStart();
+							}
+						});
+					} else {
+						scenes.enqueue(new Runnable() {
+							@Override
+							public void run() {
+								scenes.gameReset();
+							}
+						});
+						getContentPane().remove(c);
+					}
+					thisenabled = !thisenabled;
 				}
-				thisenabled = !thisenabled;
-			}
-		});
+			});
+			getContentPane().add(button, BorderLayout.NORTH);
+		}
 
 		jLabel = new JLabel("Time:");
 
 		getContentPane().add(jLabel, BorderLayout.SOUTH);
-		getContentPane().add(button, BorderLayout.NORTH);
 
 	}
 

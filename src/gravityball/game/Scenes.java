@@ -36,7 +36,7 @@ import gravityball.ui.MainWindow;
 public class Scenes extends SimpleApplication {
 
 	/** 场景状态 */
-	enum ScenesStatus {
+	public enum ScenesStatus {
 		/** 未初始化 */
 		NOT_INITED,
 		/** 准备就绪，可以开始 */
@@ -153,12 +153,13 @@ public class Scenes extends SimpleApplication {
 	/** 将游戏重置为NOT_INITED */
 	public void gameReset() {
 		this.status = ScenesStatus.NOT_INITED;
-
-		this.rootNode.detachAllChildren();
-
-		if (this.dlight != null)
+		if(this.alight!=null)
+			this.rootNode.removeLight(this.alight);
+		if(this.dlight!=null)
 			this.rootNode.removeLight(this.dlight);
-		this.dlight = null;
+		this.rootNode.detachAllChildren();
+		this.audioBackground.stop();
+		this.viewPort.clearProcessors();
 	}
 
 	/** 开始游戏 */
@@ -247,6 +248,9 @@ public class Scenes extends SimpleApplication {
 		cam.setFrustumPerspective(45.f, (float) dimension.width / (float) dimension.height, 0.1f, 5.f);
 		cam.update();
 	}
+	
+	DirectionalLightShadowRenderer dlsr;
+	
 
 	/** 初始化场景 */
 	private void initObjects() {
@@ -259,7 +263,7 @@ public class Scenes extends SimpleApplication {
 
 		// 生成阴影
 		final int SHADOWMAP_SIZE = Program.SHADOW_MAP_SIZE;
-		DirectionalLightShadowRenderer dlsr = new DirectionalLightShadowRenderer(assetManager, SHADOWMAP_SIZE,
+		dlsr = new DirectionalLightShadowRenderer(assetManager, SHADOWMAP_SIZE,
 				Program.SHADOW_SPLITS);
 		dlsr.setLight(dlight);
 		dlsr.setEdgeFilteringMode(Program.SHADOW_MODE);
