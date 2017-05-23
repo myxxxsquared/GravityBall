@@ -4,11 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.InputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -65,7 +62,8 @@ public class MainWindow extends JFrame {
 					scenes.enqueue(new Runnable() {
 						@Override
 						public void run() {
-							scenes.loadFromFile(new JSONObject(readall(".\\map\\map1.json")));
+							scenes.loadFromFile(
+									new JSONObject(readall(MainWindow.class.getResourceAsStream("/Maps/map1.json"))));
 							scenes.gameStart();
 						}
 					});
@@ -81,7 +79,7 @@ public class MainWindow extends JFrame {
 
 		getContentPane().add(jLabel, BorderLayout.SOUTH);
 		getContentPane().add(button, BorderLayout.NORTH);
-		
+
 	}
 
 	// 临时测试变量
@@ -89,25 +87,15 @@ public class MainWindow extends JFrame {
 	public static JLabel jLabel;
 
 	// 临时测试函数
-	static String readall(String filename) {
-		String encoding = "utf-8";
-		File file = new File(filename);
-		Long filelength = file.length();
-		byte[] filecontent = new byte[filelength.intValue()];
-		try (FileInputStream inputStream = new FileInputStream(file)) {
-			inputStream.read(filecontent);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+	static String readall(InputStream input) {
+		StringBuffer out = new StringBuffer();
+		byte[] b = new byte[4096];
 		try {
-			return new String(filecontent, encoding);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			for (int n; (n = input.read(b)) != -1;) {
+				out.append(new String(b, 0, n, "UTF-8"));
+			}
+		} catch (IOException e) {
 		}
-
-		return null;
+		return out.toString();
 	}
 }
