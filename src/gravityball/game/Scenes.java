@@ -18,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioData.DataType;
+import com.jme3.audio.AudioNode;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
@@ -66,6 +68,9 @@ public class Scenes extends SimpleApplication {
 
 	/** 玩家的分数 */
 	private int score;
+
+	/** 声音文件名称 */
+	private String soundFileName;
 
 	/** 获取当前游戏时间 */
 	public float getTime() {
@@ -122,6 +127,7 @@ public class Scenes extends SimpleApplication {
 		time = 0.f;
 		speed = 1.f;
 		score = 0;
+		this.soundFileName = j.getString("background_sound");
 
 		// 加载球
 		JSONObject jball = j.getJSONObject("ball");
@@ -138,6 +144,8 @@ public class Scenes extends SimpleApplication {
 			objects.add(newobj);
 		}
 
+		initObjects();
+		
 		// 标记为加载完成
 		this.status = ScenesStatus.READY;
 	}
@@ -158,9 +166,6 @@ public class Scenes extends SimpleApplication {
 		if (!(this.status == ScenesStatus.READY || this.status == ScenesStatus.PAUSED))
 			throw new RuntimeException("this.status == ScenesStatus.READY || this.status == ScenesStatus.PAUSED");
 
-		if (this.status == ScenesStatus.READY)
-			initObjects();
-
 		this.status = ScenesStatus.PLAYING;
 	}
 
@@ -170,13 +175,16 @@ public class Scenes extends SimpleApplication {
 			throw new RuntimeException("this.status == ScenesStatus.PLAYING");
 		this.status = ScenesStatus.PAUSED;
 	}
-	
+
 	private static JLabel win_label = new JLabel("                                       You win!!!");
 	private static JFrame win_window = new JFrame();
+
 	/** 游戏获胜 */
 	public void gameWin() {
 		if (!(this.status == ScenesStatus.PLAYING))
 			throw new RuntimeException("this.status == ScenesStatus.PLAYING");
+		audioBackground.stop();
+		audioWin.play();
 		this.status = ScenesStatus.WIN;
 		win_window.setSize(300, 200);
 		win_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -188,11 +196,14 @@ public class Scenes extends SimpleApplication {
 	private static JLabel lose_label = new JLabel("                                       You lose!!!");
 	private static JFrame lose_window = new JFrame();
 	private static boolean lose_window_vis = false;
+
 	/** 游戏失败 */
 	public void gameLose() {
 		if (!(this.status == ScenesStatus.PLAYING))
 			throw new RuntimeException("this.status == ScenesStatus.PLAYING");
 		this.status = ScenesStatus.LOSE;
+		audioBackground.stop();
+		audioLose.play();
 	}
 
 	/** 游戏结束 */
@@ -208,6 +219,9 @@ public class Scenes extends SimpleApplication {
 
 	private DirectionalLight dlight;
 	private AmbientLight alight;
+	private AudioNode audioBackground;
+	private AudioNode audioLose;
+	private AudioNode audioWin;
 
 	/** 更新灯光位置和摄像机 */
 	private void updateLightCamera() {
@@ -250,6 +264,25 @@ public class Scenes extends SimpleApplication {
 		dlsr.setLight(dlight);
 		dlsr.setEdgeFilteringMode(Program.SHADOW_MODE);
 		viewPort.addProcessor(dlsr);
+
+		// 生成背景声音
+		audioBackground = new AudioNode(assetManager, soundFileName, DataType.Buffer);
+		audioBackground.setLooping(true);
+		audioBackground.setPositional(true);
+		audioBackground.setVolume(3.f);
+		rootNode.attachChild(audioBackground);
+		
+		audioLose = new AudioNode(assetManager, "Sound/over.ogg", DataType.Buffer);
+		audioLose.setPositional(false);
+		audioLose.setLooping(false);
+		audioLose.setVolume(3.f);
+		rootNode.attachChild(audioLose);
+		
+		audioWin = new AudioNode(assetManager, "Sound/win.ogg", DataType.Buffer);
+		audioWin.setPositional(false);
+		audioWin.setLooping(false);
+		audioWin.setVolume(3.f);
+		rootNode.attachChild(audioWin);
 
 		// 初始化球和对象
 		ball.initObject();
@@ -295,6 +328,9 @@ public class Scenes extends SimpleApplication {
 	/** 刷新场景 */
 	@Override
 	public void simpleUpdate(float tpf) {
+		if(tpf > 0.1f)
+			tpf = 0.1f;
+		
 		// TODO 临时代码，用于显示帧频率
 		if (MainWindow.jLabel != null)
 			MainWindow.jLabel.setText(Float.toString(1 / tpf));
@@ -324,15 +360,13 @@ public class Scenes extends SimpleApplication {
 			ball.timeEval(tpf);
 			for (ScenesObject scenesObject : objects)
 				scenesObject.timeUpdate(tpf);
-		}
-		else if(this.status == ScenesStatus.LOSE && ball.locationZ >= -0.1f){
-			//球缓缓下沉
+		} else if (this.status == ScenesStatus.LOSE && ball.locationZ >= -0.1f) {
+			// 球缓缓下沉
 			this.time += tpf;
 			ball.Drop(tpf);
 			for (ScenesObject scenesObject : objects)
 				scenesObject.timeUpdate(tpf);
-		}
-		else if(ball.locationZ < -0.1f && lose_window_vis == false){
+		} else if (ball.locationZ < -0.1f && lose_window_vis == false) {
 			lose_window_vis = true;
 			lose_window.setSize(300, 200);
 			lose_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -344,5 +378,5 @@ public class Scenes extends SimpleApplication {
 		// 刷新摄像机和灯光
 		updateLightCamera();
 	}
-	
+
 }

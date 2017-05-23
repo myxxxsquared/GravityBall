@@ -85,33 +85,36 @@ public class ScenesBall {
 		this.under_f = -1 - this.mass * Math.pow(this.radius, 2) / this.momentOfInertia;
 		this.under_m = this.momentOfInertia / this.mass + this.radius * this.radius;
 	}
-	
-	/**用来确定球掉进了哪个洞里 */
+
+	/** 用来确定球掉进了哪个洞里 */
 	private float thron_x, thron_y;
-	/**用来设定球掉进了哪个洞里 */
-	public void setThron(float x, float y){
+
+	/** 用来设定球掉进了哪个洞里 */
+	public void setThron(float x, float y) {
 		thron_x = x;
 		thron_y = y;
 	}
-	
-	/**球掉落进洞里 */
-	public void Drop(float tpf){
-		if(this.radius >= 0.02f)	
-			this.radius *= (1-tpf*0.3);//球缩小
-		
-		if(Math.abs(this.locationX - thron_x) >= 0.002f){
-			if(this.locationX > thron_x)
-				this.locationX -= 0.05*tpf;
-			else this.locationX += 0.05*tpf;
-		}//滚向中心
-		if(Math.abs(this.locationY - thron_y) >= 0.002f){
-			if(this.locationY > thron_y)
-				this.locationY -= 0.05*tpf;
-			else this.locationY += 0.05*tpf;
-		}//滚向中心
-		
-		this.locationZ -= 0.05*tpf;//下落
-		
+
+	/** 球掉落进洞里 */
+	public void Drop(float tpf) {
+		if (this.radius >= 0.02f)
+			this.radius *= (1 - tpf * 0.3);// 球缩小
+
+		if (Math.abs(this.locationX - thron_x) >= 0.002f) {
+			if (this.locationX > thron_x)
+				this.locationX -= 0.05 * tpf;
+			else
+				this.locationX += 0.05 * tpf;
+		} // 滚向中心
+		if (Math.abs(this.locationY - thron_y) >= 0.002f) {
+			if (this.locationY > thron_y)
+				this.locationY -= 0.05 * tpf;
+			else
+				this.locationY += 0.05 * tpf;
+		} // 滚向中心
+
+		this.locationZ -= 0.05 * tpf;// 下落
+
 		this.angularVelocityX *= 0.99f;
 		this.angularVelocityY *= 0.99f;
 		this.angularVelocityZ *= 0.99f;
@@ -124,10 +127,10 @@ public class ScenesBall {
 					new Vector3f(this.angularVelocityX, this.angularVelocityY, this.angularVelocityZ).normalize());
 		this.angular = quaternion.mult(this.angular);
 
-		//更新几何体位置
-		updateSphere();		
+		// 更新几何体位置
+		updateSphere();
 	}
-	
+
 	public void timeEval(float tpf) {
 		// 计算受力
 		double F_x = this.g * this.slopeX - this.alpha_v * this.velocityX;
@@ -144,11 +147,7 @@ public class ScenesBall {
 		double deltav = Math.sqrt(deltavx * deltavx + deltavy * deltavy);
 
 		// 判断是否已经发生滑动，并计算受力
-		if (deltav > 0.01) {
-			double f_max = this.miu * this.mass * this.g;
-			f_x = deltavx / deltav * f_max;
-			f_y = deltavy / deltav * f_max;
-		} else {
+		if (deltav < 0.001) {
 			f_x = F_x / this.under_f + M_y / this.under_m;
 			f_y = F_y / this.under_f - M_x / this.under_m;
 			double f = Math.sqrt(f_x * f_x + f_y * f_y);
@@ -157,6 +156,14 @@ public class ScenesBall {
 				f_x = f_x / f * f_max;
 				f_y = f_y / f * f_max;
 			}
+		} else if (deltav < 0.3) {
+			double f_max = this.miu * this.mass * this.g;
+			f_x = deltavx * f_max;
+			f_y = deltavy * f_max;
+		} else {
+			double f_max = this.miu * this.mass * this.g;
+			f_x = deltavx / deltav * f_max;
+			f_y = deltavy / deltav * f_max;
 		}
 
 		// 计算加速度
@@ -184,7 +191,7 @@ public class ScenesBall {
 					new Vector3f(this.angularVelocityX, this.angularVelocityY, this.angularVelocityZ).normalize());
 		this.angular = quaternion.mult(this.angular);
 
-		//更新几何体位置
+		// 更新几何体位置
 		updateSphere();
 	}
 
@@ -220,5 +227,5 @@ public class ScenesBall {
 		// 更新位置
 		updateSphere();
 	}
-	
+
 }

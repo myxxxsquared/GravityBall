@@ -2,6 +2,8 @@ package gravityball.game;
 
 import org.json.JSONObject;
 
+import com.jme3.audio.AudioNode;
+import com.jme3.audio.AudioData.DataType;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
@@ -30,7 +32,10 @@ public class Wall extends ScenesObject {
 	/** 弹性系数 */
 	public float e;
 
+	private AudioNode audioBump;
+
 	public final static float MOVE_ADD_DELTA = 0.001f;
+	public final static float BUMP_SOUND_V = 0.3f;
 
 	public Wall(Scenes scenes) {
 		super(scenes);
@@ -57,6 +62,13 @@ public class Wall extends ScenesObject {
 		material.setColor("Ambient", new ColorRGBA(1.5f, 1.5f, 1.5f, 1.f));
 		material.setFloat("Shininess", 64f); // [0,128]
 		geoWall.setMaterial(material);
+
+		// 声音
+		audioBump = new AudioNode(scenes.getAssetManager(), "Sound/bump.ogg", DataType.Buffer);
+		audioBump.setPositional(false);
+		audioBump.setLooping(false);
+		audioBump.setVolume(3.f);
+		objNode.attachChild(audioBump);
 
 		// 添加到场景
 		this.objNode.attachChild(geoWall);
@@ -118,6 +130,8 @@ public class Wall extends ScenesObject {
 
 				// 更新球的速度，更新前判断速度方向
 				if (ballVecLocal.y > 0 && ballPointLocal.y < 0 || ballVecLocal.y < 0 && ballPointLocal.y > 0) {
+					if(Math.abs(ballVecLocal.y) > BUMP_SOUND_V)
+						this.audioBump.play();
 					ballVecLocal.y *= this.e;
 					ballVecLocal = transInv.mult(ballVecLocal);
 					ball.velocityX = ballVecLocal.x;

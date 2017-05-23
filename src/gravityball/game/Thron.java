@@ -39,7 +39,7 @@ public class Thron extends ScenesObject {
 		geoThron.setQueueBucket(Bucket.Transparent);
 
 		// 关闭阴影
-		geoThron.setShadowMode(com.jme3.renderer.queue.RenderQueue.ShadowMode.Off);
+		geoThron.setShadowMode(com.jme3.renderer.queue.RenderQueue.ShadowMode.Receive);
 
 		// 设置运动位置
 		geoThron.setLocalTranslation(locationX, locationY, 0.f);
@@ -53,11 +53,11 @@ public class Thron extends ScenesObject {
 	public void collisionDetect() {
 		// TODO Auto-generated method stub
 		ScenesBall ball = scenes.getBall();
-		//判断是否与小球相碰
-		float distence = (float) Math.sqrt((ball.locationX-this.locationX)*(ball.locationX-this.locationX) + 
-				(ball.locationY-this.locationY)*(ball.locationY-this.locationY));
-		if(distence <= ball.radius + 0.002){
-			ball.setThron(this.locationX, this.locationY);//把这个刺的坐标传给球
+		// 判断是否与小球相碰
+		float distence = (float) Math.sqrt((ball.locationX - this.locationX) * (ball.locationX - this.locationX)
+				+ (ball.locationY - this.locationY) * (ball.locationY - this.locationY));
+		if (distence <= ball.radius + 0.002) {
+			ball.setThron(this.locationX, this.locationY);// 把这个刺的坐标传给球
 			scenes.gameLose();
 		}
 	}
