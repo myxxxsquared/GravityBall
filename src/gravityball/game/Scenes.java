@@ -145,7 +145,7 @@ public class Scenes extends SimpleApplication {
 		}
 
 		initObjects();
-		
+
 		// 标记为加载完成
 		this.status = ScenesStatus.READY;
 	}
@@ -153,9 +153,9 @@ public class Scenes extends SimpleApplication {
 	/** 将游戏重置为NOT_INITED */
 	public void gameReset() {
 		this.status = ScenesStatus.NOT_INITED;
-		if(this.alight!=null)
+		if (this.alight != null)
 			this.rootNode.removeLight(this.alight);
-		if(this.dlight!=null)
+		if (this.dlight != null)
 			this.rootNode.removeLight(this.dlight);
 		this.rootNode.detachAllChildren();
 		this.audioBackground.stop();
@@ -177,6 +177,13 @@ public class Scenes extends SimpleApplication {
 		this.status = ScenesStatus.PAUSED;
 	}
 
+	/** 恢复游戏 */
+	public void gameResume() {
+		if (!(this.status == ScenesStatus.PAUSED))
+			throw new RuntimeException("this.status == ScenesStatus.PAUSED");
+		this.status = ScenesStatus.PLAYING;
+	}
+
 	private static JLabel win_label = new JLabel("                                       You win!!!");
 	private static JFrame win_window = new JFrame();
 
@@ -187,11 +194,18 @@ public class Scenes extends SimpleApplication {
 		audioBackground.stop();
 		audioWin.play();
 		this.status = ScenesStatus.WIN;
-		win_window.setSize(300, 200);
-		win_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		win_window.setLocation(400, 200);
-		win_window.getContentPane().add(win_label, BorderLayout.CENTER);
-		win_window.setVisible(true);
+		/*
+		 * win_window.setSize(300, 200);
+		 * win_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		 * win_window.setLocation(400, 200);
+		 * win_window.getContentPane().add(win_label, BorderLayout.CENTER);
+		 * win_window.setVisible(true);
+		 */
+		Program.mainWindow.game.setVisible(false);
+		if (Program.mainWindow.gameLevel == 5)
+			Program.mainWindow.winFinal.setVisible(true);
+		else
+			Program.mainWindow.win.setVisible(true);
 	}
 
 	private static JLabel lose_label = new JLabel("                                       You lose!!!");
@@ -248,9 +262,8 @@ public class Scenes extends SimpleApplication {
 		cam.setFrustumPerspective(45.f, (float) dimension.width / (float) dimension.height, 0.1f, 5.f);
 		cam.update();
 	}
-	
+
 	DirectionalLightShadowRenderer dlsr;
-	
 
 	/** 初始化场景 */
 	private void initObjects() {
@@ -263,8 +276,7 @@ public class Scenes extends SimpleApplication {
 
 		// 生成阴影
 		final int SHADOWMAP_SIZE = Program.SHADOW_MAP_SIZE;
-		dlsr = new DirectionalLightShadowRenderer(assetManager, SHADOWMAP_SIZE,
-				Program.SHADOW_SPLITS);
+		dlsr = new DirectionalLightShadowRenderer(assetManager, SHADOWMAP_SIZE, Program.SHADOW_SPLITS);
 		dlsr.setLight(dlight);
 		dlsr.setEdgeFilteringMode(Program.SHADOW_MODE);
 		viewPort.addProcessor(dlsr);
@@ -275,13 +287,13 @@ public class Scenes extends SimpleApplication {
 		audioBackground.setPositional(true);
 		audioBackground.setVolume(3.f);
 		rootNode.attachChild(audioBackground);
-		
+
 		audioLose = new AudioNode(assetManager, "Sound/over.ogg", DataType.Buffer);
 		audioLose.setPositional(false);
 		audioLose.setLooping(false);
 		audioLose.setVolume(3.f);
 		rootNode.attachChild(audioLose);
-		
+
 		audioWin = new AudioNode(assetManager, "Sound/win.ogg", DataType.Buffer);
 		audioWin.setPositional(false);
 		audioWin.setLooping(false);
@@ -332,9 +344,9 @@ public class Scenes extends SimpleApplication {
 	/** 刷新场景 */
 	@Override
 	public void simpleUpdate(float tpf) {
-		if(tpf > 0.1f)
+		if (tpf > 0.1f)
 			tpf = 0.1f;
-		
+
 		// TODO 临时代码，用于显示帧频率
 		if (MainWindow.jLabel != null)
 			MainWindow.jLabel.setText(Float.toString(1 / tpf));
@@ -370,13 +382,20 @@ public class Scenes extends SimpleApplication {
 			ball.Drop(tpf);
 			for (ScenesObject scenesObject : objects)
 				scenesObject.timeUpdate(tpf);
-		} else if (ball.locationZ < -0.1f && lose_window_vis == false) {
+		}
+
+		else if (ball.locationZ < -0.1f && lose_window_vis == false) {
 			lose_window_vis = true;
-			lose_window.setSize(300, 200);
-			lose_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-			lose_window.setLocation(400, 200);
-			lose_window.getContentPane().add(lose_label, BorderLayout.CENTER);
-			lose_window.setVisible(true);
+			/*
+			 * lose_window.setSize(300, 200);
+			 * lose_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			 * lose_window.setLocation(400, 200);
+			 * lose_window.getContentPane().add(lose_label,
+			 * BorderLayout.CENTER); lose_window.setVisible(true);
+			 */
+
+			Program.mainWindow.game.setVisible(false);
+			Program.mainWindow.lose.setVisible(true);
 		}
 
 		// 刷新摄像机和灯光
