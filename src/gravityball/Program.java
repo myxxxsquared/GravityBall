@@ -1,5 +1,7 @@
 package gravityball;
 
+import javax.swing.JFrame;
+
 import com.jme3.shadow.EdgeFilteringMode;
 
 import gravityball.ui.MainWindow;
@@ -7,12 +9,15 @@ import gravityball.ui.MainWindow;
 /** Main函数和程序设置 */
 public class Program {
 
+	public static MainWindow mainWindow;
 	/** Main函数 */
 	public static void main(String[] args) {
-		MainWindow mainWindow = new MainWindow();
+		mainWindow = new MainWindow();
+		//MainWindow mainWindow = new MainWindow();
 		mainWindow.setVisible(true);
 		mainWindow.setLocation(340, 100);
-		
+		mainWindow.setSize(800, 600);
+		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	/** 采样次数 */
