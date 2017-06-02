@@ -1,13 +1,14 @@
 {
+	"background_sound" : "Sound/back1.ogg",
 	"ball" : {
-		"radius" : "0.09",
+		"radius" : "0.08",
 		"locationX" : "-0.9",
 		"locationY" : "0.9",
-		"locationZ" : "0.09",
+		"locationZ" : "0.08",
 		"g" : "9.0",
 		"mass" : "1",
 		"miu" : "0.5",
-		"momentOfInertia" : "0.02",
+		"momentOfInertia" : "0.001",
 		"alpha_v" : "0.03",
 		"alpha_m" : "0.03"
 	},
@@ -45,65 +46,294 @@
 		},
 		{
 			"name" : "wall",
-			"x1" : "-1.0",
-			"y1" : "0.8",
-			"x2" : "-0.4",
-			"y2" : "0.8"
+			"x1" : "-0.7",
+			"y1" : "1.0",
+			"x2" : "-0.7",
+			"y2" : "0.5"
 		},
 		{
 			"name" : "wall",
-			"x1" : "-0.8,
-			"y1" : "0.6",
+			"x1" : "-0.7",
+			"y1" : "0.5",
+			"x2" : "-0.5",
+			"y2" : "0.5"
+		},
+		{
+			"name" : "wall",
+			"x1" : "-0.5",
+			"y1" : "0.5",
+			"x2" : "-0.5",
+			"y2" : "-0.2"
+		},
+		{
+			"name" : "wall",
+			"x1" : "-0.5",
+			"y1" : "-0.2",
+			"x2" : "-0.7",
+			"y2" : "-0.2"
+		},
+		{
+			"name" : "wall",
+			"x1" : "-0.7",
+			"y1" : "-0.2",
+			"x2" : "-0.7",
+			"y2" : "-0.5"
+		},
+		{
+			"name" : "wall",
+			"x1" : "0.5",
+			"y1" : "-0.5",
+			"x2" : "-0.7",
+			"y2" : "-0.5"
+		},
+		{
+			"name" : "wall",
+			"x1" : "-0.5",
+			"y1" : "-0.5",
+			"x2" : "-0.5",
+			"y2" : "-0.8"
+		},
+		{
+			"name" : "wall",
+			"x1" : "0.2",
+			"y1" : "-1.0",
+			"x2" : "0.2",
+			"y2" : "-0.8"
+		},
+		{
+			"name" : "wall",
+			"x1" : "0.5",
+			"y1" : "-0.5",
+			"x2" : "0.5",
+			"y2" : "-0.8"
+		},
+		{
+			"name" : "wall",
+			"x1" : "-0.2",
+			"y1" : "0.5",
 			"x2" : "-0.2",
-			"y2" : "-0.3"
+			"y2" : "0.1"
 		},
 		{
 			"name" : "wall",
-			"x1" : "-0.7,
-			"y1" : "-0.7",
+			"x1" : "0.1",
+			"y1" : "0.5",
 			"x2" : "0.1",
-			"y2" : "-0.7"
+			"y2" : "0.1"
+		},
+		{
+			"name" : "wall",
+			"x1" : "0.5",
+			"y1" : "0.1",
+			"x2" : "0.1",
+			"y2" : "0.1"
+		},
+		{
+			"name" : "wall",
+			"x1" : "0.5",
+			"y1" : "0.1",
+			"x2" : "0.5",
+			"y2" : "-0.1"
+		},
+		{
+			"name" : "wall",
+			"x1" : "1.0",
+			"y1" : "-0.1",
+			"x2" : "0.5",
+			"y2" : "-0.1"
+		},
+		{
+			"name" : "wall",
+			"x1" : "0.4",
+			"y1" : "1.0",
+			"x2" : "0.4",
+			"y2" : "0.3"
+		},
+		{
+			"name" : "wall",
+			"x1" : "0.7",
+			"y1" : "0.5",
+			"x2" : "0.7",
+			"y2" : "0.2"
 		},
 		{
 			"name" : "thorn",
-			"locationX" : "-0.5",
-			"locationY" : "0.6",
+			"locationX" : "-0.9",
+			"locationY" : "0.2",
 			"radius" : "0.09"
 		},
 		{
 			"name" : "thorn",
 			"locationX" : "-0.9",
-			"locationY" : "-0.4",
+			"locationY" : "-0.9",
+			"radius" : "0.09"
+		},
+		{
+			"name" : "thorn",
+			"locationX" : "-0.1",
+			"locationY" : "-0.65",
+			"radius" : "0.09"
+		},
+		{
+			"name" : "thorn",
+			"locationX" : "0.7",
+			"locationY" : "0.9",
+			"radius" : "0.09"
+		},
+		{
+			"name" : "thorn",
+			"locationX" : "0.9",
+			"locationY" : "-0.65",
+			"radius" : "0.09"
+		},
+		{
+			"name" : "thorn",
+			"locationX" : "-0.4",
+			"locationY" : "0",
+			"radius" : "0.09"
+		},
+		{
+			"name" : "thorn",
+			"locationX" : "-0.6",
+			"locationY" : "0.9",
+			"radius" : "0.09"
+		},
+		{
+			"name" : "thorn",
+			"locationX" : "-0.2",
+			"locationY" : "0.9",
+			"radius" : "0.09"
+		},
+		{
+			"name" : "thorn",
+			"locationX" : "0.9",
+			"locationY" : "0.1",
 			"radius" : "0.09"
 		},
 		{
 			"name" : "coin",
-			"locationX" : "0.5",
-			"locationY" : "-0.5",
+			"locationX" : "-0.7",
+			"locationY" : "-0.9",
 			"radius" : "0.05"
 		},
 		{
 			"name" : "coin",
-			"locationX" : "0.5",
-			"locationY" : "-0.4",
+			"locationX" : "-0.5",
+			"locationY" : "-0.9",
 			"radius" : "0.05"
 		},
 		{
 			"name" : "coin",
-			"locationX" : "0.5",
-			"locationY" : "-0.3",
+			"locationX" : "-0.35",
+			"locationY" : "-0.65",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "-0.6",
+			"locationY" : "-0.35",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "-0.4",
+			"locationY" : "-0.35",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "-0.2",
+			"locationY" : "-0.35",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0",
+			"locationY" : "-0.35",
 			"radius" : "0.05"
 		},
 		{
 			"name" : "coin",
 			"locationX" : "0.2",
+			"locationY" : "-0.35",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "-0.2",
+			"locationY" : "-0.15",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0",
+			"locationY" : "-0.15",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.2",
+			"locationY" : "-0.15",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "-0.6",
+			"locationY" : "0.7",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "-0.4",
+			"locationY" : "0.7",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "-0.4",
 			"locationY" : "0.9",
 			"radius" : "0.05"
 		},
 		{
-			"name" : "final",
-			"locationX" : "-0.5",
+			"name" : "coin",
+			"locationX" : "0.9",
+			"locationY" : "0.7",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.9",
 			"locationY" : "0.5",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.9",
+			"locationY" : "0.3",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.9",
+			"locationY" : "-0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.7",
+			"locationY" : "-0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "coin",
+			"locationX" : "0.5",
+			"locationY" : "-0.9",
+			"radius" : "0.05"
+		},
+		{
+			"name" : "final",
+			"locationX" : "0.9",
+			"locationY" : "0.9",
 			"radius" : "0.1"
 		}
 	]
