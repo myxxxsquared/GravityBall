@@ -1,10 +1,10 @@
 {
 	"background_sound" : "Sound/back1.ogg",
 	"ball" : {
-		"radius" : "0.1",
+		"radius" : "0.08",
 		"locationX" : "0",
 		"locationY" : "0",
-		"locationZ" : "0.1",
+		"locationZ" : "0.08",
 		"g" : "9.0",
 		"mass" : "1",
 		"miu" : "0.5",
@@ -55,7 +55,7 @@
 			"name" : "thorn",
 			"locationX" : "-0.5",
 			"locationY" : "-0.5",
-			"radius" : "0.1"
+			"radius" : "0.09"
 		},
 		{
 			"name" : "coin",
@@ -82,87 +82,15 @@
 			"radius" : "0.05"
 		},
 		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
-			"name" : "coin",
-			"locationX" : "0.2",
-			"locationY" : "0.9",
-			"radius" : "0.05"
-		},
-		{
 			"name" : "final",
 			"locationX" : "-0.5",
 			"locationY" : "0.5",
+			"radius" : "0.1"
+		},
+		{
+			"name" : "updateobject",
+			"locationX" : "0.9",
+			"locationY" : "-0.8",
 			"radius" : "0.1"
 		}
 	]

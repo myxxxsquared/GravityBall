@@ -35,7 +35,7 @@ public class UpdateObject extends ScenesObject {
 	@Override
 	public void init() {
 		// 初始化几何体
-		geoCoin = scenes.getAssetManager().loadModel("Models/coin.obj");
+		geoCoin = scenes.getAssetManager().loadModel("Models/questionmark.obj");
 
 		// 初始化材质
 		Material material = new Material(scenes.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
@@ -47,6 +47,7 @@ public class UpdateObject extends ScenesObject {
 		material.setFloat("Shininess", 64f);
 		material.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
 		geoCoin.setMaterial(material);
+		//geoCoin.setLocalScale(-1.f);
 
 		audioEatting = new AudioNode(scenes.getAssetManager(), "Sound/coin.ogg", DataType.Buffer);
 		audioEatting.setPositional(false);
