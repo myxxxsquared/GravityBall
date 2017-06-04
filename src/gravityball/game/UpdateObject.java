@@ -23,9 +23,10 @@ public class UpdateObject extends ScenesObject {
 	private AudioNode audioEatting;
 	
 	/** 道具类型
-	 * 1 弹性增强1.0
+	 * 1 弹性增强3.0
 	 * 2 体积缩小
-	 * 3 g减小*/
+	 * 3 g减小
+	 * 4 操作颠倒*/
 	private int type;
 
 	public UpdateObject(Scenes scenes) {
@@ -93,6 +94,10 @@ public class UpdateObject extends ScenesObject {
 					ball.g *= 0.5;
 					break;
 				}
+				case 4:{
+					scenes.opposide = true;
+					break;
+				}
 			}
 			// 如何删掉这个金币？
 			// this.objNode.detachChild(geoCoin);
@@ -110,24 +115,29 @@ public class UpdateObject extends ScenesObject {
 			if(eaten_time > 15f){
 				ScenesBall ball = scenes.getBall();
 				switch(type){
-				case 1:{
-					Wall.e = -0.5f;
-					break;
+					case 1:{
+						Wall.e = -0.5f;
+						break;
+					}
+					case 2:{
+						//ball.radius *= 2;
+						break;
+					}
+					case 3:{
+						ball.g *= 2;
+						break;
+					}
+					case 4:{
+						scenes.opposide = false;
+						break;
+					}
 				}
-				case 2:{
-					//ball.radius *= 2;
-					break;
-				}
-				case 3:{
-					ball.g *= 2;
-					break;
-				}
-			}
 				this.restore = true;
 				return;
 			}
 			eaten_time += tpf;
 		}
+		if(eaten) return;
 		// 转过一个小角度
 		angle += tpf * 1.f;
 		geoCoin.setLocalRotation(new Quaternion(new float[] { 0.f, 0.f, angle }));
@@ -141,7 +151,7 @@ public class UpdateObject extends ScenesObject {
 		this.radius = (float) j.getDouble("radius");
 		this.eaten_time = 0;
 		this.restore = false;
-		this.type = (int)(Math.random() * 2.9) + 1;
+		this.type = (int)(Math.random() * 3.9) + 1;
 	}
 
 }

@@ -148,6 +148,7 @@ public class Scenes extends SimpleApplication {
 
 		// 标记为加载完成
 		this.status = ScenesStatus.READY;
+		this.opposide = false;
 	}
 
 	/** 将游戏重置为NOT_INITED */
@@ -166,6 +167,7 @@ public class Scenes extends SimpleApplication {
 		}
 		this.viewPort.clearProcessors();
 		lose_window_vis = false;
+		opposide = false;
 	}
 
 	/** 开始游戏 */
@@ -346,7 +348,8 @@ public class Scenes extends SimpleApplication {
 			c = c.getParent();
 		} while (c != null);
 	}
-
+	
+	public boolean opposide;
 	/** 刷新场景 */
 	@Override
 	public void simpleUpdate(float tpf) {
@@ -374,6 +377,10 @@ public class Scenes extends SimpleApplication {
 				y = 1;
 			ball.slopeX = x / 10;
 			ball.slopeY = y / 10;
+			if(opposide){//反向
+				ball.slopeX = -ball.slopeX;
+				ball.slopeY = -ball.slopeY;
+			}
 
 			// 时间演化
 			this.time += tpf;
