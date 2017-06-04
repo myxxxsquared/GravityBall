@@ -1,5 +1,5 @@
 {
-	"background_sound" : "Sound/back1.ogg",
+	"background_sound" : "Sound/back2.ogg",
 	"ball" : {
 		"radius" : "0.08",
 		"locationX" : "-0.9",

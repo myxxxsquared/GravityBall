@@ -15,18 +15,16 @@ public class UpdateObject extends ScenesObject {
 	private float locationX, locationY, radius;
 
 	/** 硬币的几何体 */
-	private Spatial geoCoin;
+	private Spatial geoUpdate;
 
 	/** 刺转过的角度 */
 	private float angle;
 
 	private AudioNode audioEatting;
-	
-	/** 道具类型
-	 * 1 弹性增强3.0
-	 * 2 体积缩小
-	 * 3 g减小
-	 * 4 操作颠倒*/
+
+	/**
+	 * 道具类型 1 弹性增强3.0 2 体积缩小 3 g减小 4 操作颠倒
+	 */
 	private int type;
 
 	public UpdateObject(Scenes scenes) {
@@ -36,7 +34,7 @@ public class UpdateObject extends ScenesObject {
 	@Override
 	public void init() {
 		// 初始化几何体
-		geoCoin = scenes.getAssetManager().loadModel("Models/questionmark.obj");
+		geoUpdate = scenes.getAssetManager().loadModel("Models/questionmark.obj");
 
 		// 初始化材质
 		Material material = new Material(scenes.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
@@ -47,23 +45,23 @@ public class UpdateObject extends ScenesObject {
 		material.setColor("Ambient", new ColorRGBA(1.5f, 1.5f, 1.5f, 1.f));
 		material.setFloat("Shininess", 64f);
 		material.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
-		geoCoin.setMaterial(material);
-		//geoCoin.setLocalScale(-1.f);
+		geoUpdate.setMaterial(material);
+		// geoCoin.setLocalScale(-1.f);
 
-		audioEatting = new AudioNode(scenes.getAssetManager(), "Sound/coin.ogg", DataType.Buffer);
+		audioEatting = new AudioNode(scenes.getAssetManager(), "Sound/up.ogg", DataType.Buffer);
 		audioEatting.setPositional(false);
 		audioEatting.setLooping(false);
 		audioEatting.setVolume(3.f);
 		objNode.attachChild(audioEatting);
 
 		// 设置运动位置
-		geoCoin.setLocalTranslation(locationX, locationY, radius);
-		geoCoin.setLocalScale(radius);
+		geoUpdate.setLocalTranslation(locationX, locationY, radius);
+		geoUpdate.setLocalScale(radius);
 		angle = 0.f;
 		eaten = false;
 
 		// 添加到场景
-		this.objNode.attachChild(geoCoin);
+		this.objNode.attachChild(geoUpdate);
 	}
 
 	private boolean eaten;
@@ -79,25 +77,29 @@ public class UpdateObject extends ScenesObject {
 		if (distence <= ball.radius + this.radius - 0.01) {
 			// 这时候这个道具被吃掉
 			eaten = true;
-			switch(type){
-				case 1:{
-					Wall.e = -3.0f;
-					break;
-				}
-				case 2:{
-					ball.mass *= 0.5;
-					ball.radius *= 0.5;
-					ball.locationZ *= 0.5;
-					break;
-				}
-				case 3:{
-					ball.g *= 0.5;
-					break;
-				}
-				case 4:{
-					scenes.opposide = true;
-					break;
-				}
+			switch (type) {
+			case 1: {
+				Wall.e = -3.0f;
+				ball.sphereMat.setColor("Diffuse", ColorRGBA.Yellow);
+				ball.sphereMat.setColor("Ambient", ColorRGBA.Yellow);
+				break;
+			}
+			case 2: {
+				ball.mass *= 0.5;
+				ball.radius *= 0.5;
+				ball.locationZ *= 0.5;
+				break;
+			}
+			case 3: {
+				ball.g *= 0.5;
+				ball.sphereMat.setColor("Diffuse", ColorRGBA.Gray);
+				ball.sphereMat.setColor("Ambient", ColorRGBA.Gray);
+				break;
+			}
+			case 4: {
+				scenes.opposide = true;
+				break;
+			}
 			}
 			// 如何删掉这个金币？
 			// this.objNode.detachChild(geoCoin);
@@ -107,40 +109,47 @@ public class UpdateObject extends ScenesObject {
 		}
 
 	}
-	private float eaten_time; 
+
+	private float eaten_time;
 	private boolean restore;
+
 	@Override
 	public void timeUpdate(float tpf) {
-		if (eaten && !restore){
-			if(eaten_time > 15f){
+		if (eaten && !restore) {
+			if (eaten_time > 15f) {
 				ScenesBall ball = scenes.getBall();
-				switch(type){
-					case 1:{
-						Wall.e = -0.5f;
-						break;
-					}
-					case 2:{
-						//ball.radius *= 2;
-						break;
-					}
-					case 3:{
-						ball.g *= 2;
-						break;
-					}
-					case 4:{
-						scenes.opposide = false;
-						break;
-					}
+				switch (type) {
+				case 1: {
+					Wall.e = -0.5f;
+					ball.sphereMat.setColor("Diffuse", ColorRGBA.White);
+					ball.sphereMat.setColor("Ambient", ColorRGBA.White);
+					break;
+				}
+				case 2: {
+					// ball.radius *= 2;
+					break;
+				}
+				case 3: {
+					ball.g *= 2;
+					ball.sphereMat.setColor("Diffuse", ColorRGBA.White);
+					ball.sphereMat.setColor("Ambient", ColorRGBA.White);
+					break;
+				}
+				case 4: {
+					scenes.opposide = false;
+					break;
+				}
 				}
 				this.restore = true;
 				return;
 			}
 			eaten_time += tpf;
 		}
-		if(eaten) return;
+		if (eaten)
+			return;
 		// 转过一个小角度
 		angle += tpf * 1.f;
-		geoCoin.setLocalRotation(new Quaternion(new float[] { 0.f, 0.f, angle }));
+		geoUpdate.setLocalRotation(new Quaternion(new float[] { 0.f, 0.f, angle }));
 	}
 
 	@Override
@@ -151,7 +160,7 @@ public class UpdateObject extends ScenesObject {
 		this.radius = (float) j.getDouble("radius");
 		this.eaten_time = 0;
 		this.restore = false;
-		this.type = (int)(Math.random() * 3.9) + 1;
+		this.type = (int) (Math.random() * 3.99) + 1;
 	}
 
 }

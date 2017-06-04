@@ -197,6 +197,9 @@ public class ScenesBall {
 
 	/** 小球几何体 */
 	private Spatial sphereGeo;
+	
+	/** 小球材质 */
+	public Material sphereMat;
 
 	/** 更新小球的位置 */
 	private void updateSphere() {
@@ -212,7 +215,7 @@ public class ScenesBall {
 		sphereMesh.setTextureMode(Sphere.TextureMode.Projected);
 
 		// 初始化材质
-		Material sphereMat = new Material(scenes.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
+		sphereMat = new Material(scenes.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
 		sphereMat.setTexture("DiffuseMap", scenes.getAssetManager().loadTexture("Textures/Terrain/Pond/Pond.jpg"));
 		sphereMat.setBoolean("UseMaterialColors", true);
 		sphereMat.setColor("Ambient", ColorRGBA.White);

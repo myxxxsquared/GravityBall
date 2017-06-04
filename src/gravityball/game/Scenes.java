@@ -1,6 +1,5 @@
 package gravityball.game;
 
-import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -11,8 +10,8 @@ import java.awt.Window;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+//import javax.swing.JFrame;
+//import javax.swing.JLabel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,7 +29,7 @@ import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.JmeCanvasContext;
 
 import gravityball.Program;
-import gravityball.ui.MainWindow;
+//import gravityball.ui.MainWindow;
 
 /** 描述一个场景 */
 public class Scenes extends SimpleApplication {
@@ -159,11 +158,10 @@ public class Scenes extends SimpleApplication {
 		if (this.dlight != null)
 			this.rootNode.removeLight(this.dlight);
 		this.rootNode.detachAllChildren();
-		try{
+		try {
 			this.audioBackground.stop();
-		}
-		catch(Exception e){
-			
+		} catch (Exception e) {
+
 		}
 		this.viewPort.clearProcessors();
 		lose_window_vis = false;
@@ -192,8 +190,8 @@ public class Scenes extends SimpleApplication {
 		this.status = ScenesStatus.PLAYING;
 	}
 
-	private static JLabel win_label = new JLabel("                                       You win!!!");
-	private static JFrame win_window = new JFrame();
+	// private static JLabel win_label = new JLabel(" You win!!!");
+	// private static JFrame win_window = new JFrame();
 
 	/** 游戏获胜 */
 	public void gameWin() {
@@ -216,8 +214,8 @@ public class Scenes extends SimpleApplication {
 			Program.mainWindow.win.setVisible(true);
 	}
 
-	private static JLabel lose_label = new JLabel("                                       You lose!!!");
-	private static JFrame lose_window = new JFrame();
+	// private static JLabel lose_label = new JLabel(" You lose!!!");
+	// private static JFrame lose_window = new JFrame();
 	private static boolean lose_window_vis = false;
 
 	/** 游戏失败 */
@@ -348,17 +346,18 @@ public class Scenes extends SimpleApplication {
 			c = c.getParent();
 		} while (c != null);
 	}
-	
+
 	public boolean opposide;
+
 	/** 刷新场景 */
 	@Override
 	public void simpleUpdate(float tpf) {
 		if (tpf > 0.1f)
 			tpf = 0.1f;
 
-		// TODO 临时代码，用于显示帧频率
-		if (MainWindow.jLabel != null)
-			MainWindow.jLabel.setText(Float.toString(1 / tpf));
+		// // 临时代码，用于显示帧频率
+		// if (MainWindow.jLabel != null)
+		// MainWindow.jLabel.setText(Float.toString(1 / tpf));
 
 		if (this.status == ScenesStatus.PLAYING) {
 			// 根据鼠标位置刷新斜率
@@ -377,7 +376,7 @@ public class Scenes extends SimpleApplication {
 				y = 1;
 			ball.slopeX = x / 10;
 			ball.slopeY = y / 10;
-			if(opposide){//反向
+			if (opposide) {// 反向
 				ball.slopeX = -ball.slopeX;
 				ball.slopeY = -ball.slopeY;
 			}

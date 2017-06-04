@@ -30,7 +30,7 @@ public class Wall extends ScenesObject {
 	public Matrix3f matTransport;
 
 	/** 弹性系数 */
-	public static float e;
+	public static float e = 0.5f;
 
 	private AudioNode audioBump;
 
@@ -132,7 +132,7 @@ public class Wall extends ScenesObject {
 				if (ballVecLocal.y > 0 && ballPointLocal.y < 0 || ballVecLocal.y < 0 && ballPointLocal.y > 0) {
 					if(Math.abs(ballVecLocal.y) > BUMP_SOUND_V)
 						this.audioBump.play();
-					ballVecLocal.y *= this.e;
+					ballVecLocal.y *= e;
 					ballVecLocal = transInv.mult(ballVecLocal);
 					ball.velocityX = ballVecLocal.x;
 					ball.velocityY = ballVecLocal.y;
@@ -154,7 +154,7 @@ public class Wall extends ScenesObject {
 		this.y1 = (float) j.getDouble("y1");
 		this.y2 = (float) j.getDouble("y2");
 
-		this.e = -0.5f;
+		//this.e = -0.5f;
 
 		this.width = 0.01f;
 		this.height = 0.08f;
