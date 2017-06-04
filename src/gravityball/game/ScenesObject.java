@@ -60,6 +60,8 @@ public abstract class ScenesObject {
 			return new Coin(scenes);
 		case "final":
 			return new Final(scenes);
+		case "updateobject":
+			return new UpdateObject(scenes);
 		default:
 			return null;
 		}
