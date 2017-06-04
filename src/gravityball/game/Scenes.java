@@ -158,8 +158,14 @@ public class Scenes extends SimpleApplication {
 		if (this.dlight != null)
 			this.rootNode.removeLight(this.dlight);
 		this.rootNode.detachAllChildren();
-		this.audioBackground.stop();
+		try{
+			this.audioBackground.stop();
+		}
+		catch(Exception e){
+			
+		}
 		this.viewPort.clearProcessors();
+		lose_window_vis = false;
 	}
 
 	/** 开始游戏 */

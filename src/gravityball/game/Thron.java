@@ -56,17 +56,27 @@ public class Thron extends ScenesObject {
 		// 判断是否与小球相碰
 		float distence = (float) Math.sqrt((ball.locationX - this.locationX) * (ball.locationX - this.locationX)
 				+ (ball.locationY - this.locationY) * (ball.locationY - this.locationY));
-		if (distence <= ball.radius + 0.002) {
+		if (distence <= this.radius) {
 			ball.setThron(this.locationX, this.locationY);// 把这个刺的坐标传给球
 			scenes.gameLose();
 		}
 	}
+	
+	public final float MG = 0.01f;
 
 	@Override
 	public void timeUpdate(float tpf) {
 		// 转过一个小角度
+		ScenesBall ball = scenes.getBall();
 		angle += tpf * 0.5f;
 		geoThron.setLocalRotation(new Quaternion(new float[] { 0.f, 0.f, angle }));
+		
+		float distence = (float) Math.sqrt((ball.locationX - this.locationX) * (ball.locationX - this.locationX)
+				+ (ball.locationY - this.locationY) * (ball.locationY - this.locationY));
+		if (distence <= this.radius*5 && distence >this.radius + 0.01) {
+			ball.velocityX += (this.locationX - ball.locationX)/ distence/distence/distence * MG*tpf;
+			ball.velocityY += (this.locationY - ball.locationY)/ distence/distence/distence * MG*tpf;
+		}
 	}
 
 	@Override
