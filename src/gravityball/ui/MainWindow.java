@@ -25,6 +25,7 @@ import com.jme3.system.JmeCanvasContext;
 
 import gravityball.Program;
 import gravityball.game.Scenes;
+import gravityball.game.Scenes.ScenesStatus;
 
 /** 主窗口 */
 public class MainWindow extends JFrame {
@@ -290,7 +291,8 @@ public class MainWindow extends JFrame {
 						scenes.enqueue(new Runnable() {
 							@Override
 							public void run() {
-								scenes.gamePause();
+								if(scenes.getStatus() == ScenesStatus.PLAYING)
+									scenes.gamePause();
 							}
 						});
 						if (!isInitial)
