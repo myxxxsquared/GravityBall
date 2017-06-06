@@ -143,7 +143,7 @@ public class MainWindow extends JFrame {
 
 		// 设置背景
 		protected void paintComponent(Graphics g) {
-			ImageIcon icon = new ImageIcon("assets/Background/01.jpg");
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("/Background/01.jpg"));
 			g.drawImage(icon.getImage(), 0, 0, getSize().width, getSize().height, this);// 图片会自动缩放
 		}
 
@@ -198,7 +198,7 @@ public class MainWindow extends JFrame {
 						totalScore = 0;
 						gameLevel = game_level;
 						loading.setVisible(true);
-						
+
 						if (!isInitial)
 							Program.mainWindow.remove(c);
 						final JmeCanvasContext ctx = (JmeCanvasContext) scenes.getContext();
@@ -222,7 +222,6 @@ public class MainWindow extends JFrame {
 								scenes.loadFromFile(
 										new JSONObject(readall(MainWindow.class.getResourceAsStream(str_file))));
 
-								
 								scenes.gameStart();
 								loading.setVisible(false);
 								select.setVisible(false);
@@ -241,7 +240,7 @@ public class MainWindow extends JFrame {
 
 		// 设置背景
 		protected void paintComponent(Graphics g) {
-			ImageIcon icon = new ImageIcon("assets/Background/01.jpg");
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("/Background/01.jpg"));
 			g.drawImage(icon.getImage(), 0, 0, getSize().width, getSize().height, this);// 图片会自动缩放
 		}
 
@@ -291,7 +290,7 @@ public class MainWindow extends JFrame {
 						scenes.enqueue(new Runnable() {
 							@Override
 							public void run() {
-								if(scenes.getStatus() == ScenesStatus.PLAYING)
+								if (scenes.getStatus() == ScenesStatus.PLAYING)
 									scenes.gamePause();
 							}
 						});
@@ -320,7 +319,7 @@ public class MainWindow extends JFrame {
 
 		// 设置背景
 		protected void paintComponent(Graphics g) {
-			ImageIcon icon = new ImageIcon("assets/Background/01.jpg");
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("/Background/01.jpg"));
 			g.drawImage(icon.getImage(), 0, 0, getSize().width, getSize().height, this);// 图片会自动缩放
 		}
 
@@ -407,7 +406,7 @@ public class MainWindow extends JFrame {
 
 		// 设置背景
 		protected void paintComponent(Graphics g) {
-			ImageIcon icon = new ImageIcon("assets/Background/01.jpg");
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("/Background/01.jpg"));
 			g.drawImage(icon.getImage(), 0, 0, getSize().width, getSize().height, this);// 图片会自动缩放
 		}
 
@@ -472,7 +471,7 @@ public class MainWindow extends JFrame {
 
 		// 设置背景
 		protected void paintComponent(Graphics g) {
-			ImageIcon icon = new ImageIcon("assets/Background/01.jpg");
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("/Background/01.jpg"));
 			g.drawImage(icon.getImage(), 0, 0, getSize().width, getSize().height, this);// 图片会自动缩放
 		}
 
@@ -540,7 +539,7 @@ public class MainWindow extends JFrame {
 
 		// 设置背景
 		protected void paintComponent(Graphics g) {
-			ImageIcon icon = new ImageIcon("assets/Background/01.jpg");
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("/Background/01.jpg"));
 			g.drawImage(icon.getImage(), 0, 0, getSize().width, getSize().height, this);// 图片会自动缩放
 		}
 
