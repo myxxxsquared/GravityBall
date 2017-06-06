@@ -1,5 +1,5 @@
 {
-	"background_sound" : "Sound/back4.ogg",
+	"background_sound" : "Sound/back1.ogg",
 	"ball" : {
 		"radius" : "0.08",
 		"locationX" : "-0.9",
@@ -362,6 +362,18 @@
 			"name" : "final",
 			"locationX" : "-0.7",
 			"locationY" : "-0.3",
+			"radius" : "0.1"
+		},
+		{
+			"name" : "updateobject",
+			"locationX" : "0.5",
+			"locationY" : "0.3",
+			"radius" : "0.1"
+		},
+		{
+			"name" : "updateobject",
+			"locationX" : "0.1",
+			"locationY" : "-0.1",
 			"radius" : "0.1"
 		}
 	]

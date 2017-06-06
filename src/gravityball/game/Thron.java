@@ -62,7 +62,7 @@ public class Thron extends ScenesObject {
 		}
 	}
 	
-	public final float MG = 0.01f;
+	public final float MG = 0.015f;
 
 	@Override
 	public void timeUpdate(float tpf) {

@@ -92,6 +92,12 @@
 			"locationX" : "0.9",
 			"locationY" : "-0.8",
 			"radius" : "0.1"
+		},
+		{
+			"name" : "updateobject",
+			"locationX" : "0.7",
+			"locationY" : "-0.8",
+			"radius" : "0.1"
 		}
 	]
 }

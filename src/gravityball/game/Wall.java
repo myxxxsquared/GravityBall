@@ -136,6 +136,13 @@ public class Wall extends ScenesObject {
 					ballVecLocal = transInv.mult(ballVecLocal);
 					ball.velocityX = ballVecLocal.x;
 					ball.velocityY = ballVecLocal.y;
+					//限制反弹速度为0.8f
+					if(Math.abs(ball.velocityX) > 0.8f)
+						ball.velocityX = (ball.velocityX/
+								Math.abs(ball.velocityX))*0.8f;
+					if(Math.abs(ball.velocityY) > 0.8f)
+						ball.velocityY = (ball.velocityY/
+								Math.abs(ball.velocityY))*0.8f;
 				}
 			}
 		}
