@@ -40,7 +40,7 @@ public class MainWindow extends JFrame {
 
 	boolean isInitial;
 
-	int totalScore;
+	public static int totalScore;
 
 	/** 程序设置 */
 	private AppSettings settings;

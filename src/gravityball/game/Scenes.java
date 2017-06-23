@@ -10,8 +10,6 @@ import java.awt.Window;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-//import javax.swing.JFrame;
-//import javax.swing.JLabel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,7 +27,7 @@ import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.JmeCanvasContext;
 
 import gravityball.Program;
-//import gravityball.ui.MainWindow;
+import gravityball.ui.MainWindow;
 
 /** 描述一个场景 */
 public class Scenes extends SimpleApplication {
@@ -376,6 +374,15 @@ public class Scenes extends SimpleApplication {
 			ball.timeEval(tpf);
 			for (ScenesObject scenesObject : objects)
 				scenesObject.timeUpdate(tpf);
+			
+			//分数随时间递减
+			if(MainWindow.totalScore > 0 || score > 0){
+				t_sec += tpf;
+				if(t_sec > 0.2f){
+					t_sec = 0f;
+					score -= 1;
+				}
+			}
 		} else if (this.status == ScenesStatus.LOSE && ball.locationZ >= -0.1f) {
 			// 球缓缓下沉
 			this.time += tpf;
@@ -389,14 +396,6 @@ public class Scenes extends SimpleApplication {
 			Program.mainWindow.lose.setVisible(true);
 		}
 		
-		//分数随时间递减
-		if(score > 0){
-			t_sec += tpf;
-			if(t_sec > 0.2f){
-				t_sec = 0f;
-				score -= 1;
-			}
-		}
 		// 刷新摄像机和灯光
 		updateLightCamera();
 	}
