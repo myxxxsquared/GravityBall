@@ -13,10 +13,9 @@ public class Program {
 	/** Main函数 */
 	public static void main(String[] args) {
 		mainWindow = new MainWindow();
-		//MainWindow mainWindow = new MainWindow();
 		mainWindow.setVisible(true);
 		mainWindow.setLocation(340, 100);
-		mainWindow.setSize(800, 600);
+		mainWindow.setSize(640, 600);
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	

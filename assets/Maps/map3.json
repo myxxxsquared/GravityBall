@@ -17,6 +17,9 @@
 			"name" : "ground"
 		},
 		{
+			"name" : "background"
+		},
+		{
 			"name" : "wall",
 			"x1" : "-1.0",
 			"y1" : "-1.0",

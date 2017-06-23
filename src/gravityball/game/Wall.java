@@ -30,7 +30,7 @@ public class Wall extends ScenesObject {
 	public Matrix3f matTransport;
 
 	/** 弹性系数 */
-	public static float e = 0.5f;
+	public static float e = -0.5f;
 
 	private AudioNode audioBump;
 

@@ -147,6 +147,8 @@ public class Scenes extends SimpleApplication {
 
 		// 标记为加载完成
 		this.status = ScenesStatus.READY;
+		// 道具相关初始化
+		Wall.e = -0.5f;
 		this.opposide = false;
 	}
 
@@ -165,6 +167,7 @@ public class Scenes extends SimpleApplication {
 		}
 		this.viewPort.clearProcessors();
 		lose_window_vis = false;
+		Wall.e = -0.5f;
 		opposide = false;
 	}
 
@@ -190,9 +193,6 @@ public class Scenes extends SimpleApplication {
 		this.status = ScenesStatus.PLAYING;
 	}
 
-	// private static JLabel win_label = new JLabel(" You win!!!");
-	// private static JFrame win_window = new JFrame();
-
 	/** 游戏获胜 */
 	public void gameWin() {
 		if (!(this.status == ScenesStatus.PLAYING))
@@ -200,13 +200,6 @@ public class Scenes extends SimpleApplication {
 		audioBackground.stop();
 		audioWin.play();
 		this.status = ScenesStatus.WIN;
-		/*
-		 * win_window.setSize(300, 200);
-		 * win_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		 * win_window.setLocation(400, 200);
-		 * win_window.getContentPane().add(win_label, BorderLayout.CENTER);
-		 * win_window.setVisible(true);
-		 */
 		Program.mainWindow.game.setVisible(false);
 		if (Program.mainWindow.gameLevel == 5)
 			Program.mainWindow.winFinal.setVisible(true);
@@ -214,8 +207,6 @@ public class Scenes extends SimpleApplication {
 			Program.mainWindow.win.setVisible(true);
 	}
 
-	// private static JLabel lose_label = new JLabel(" You lose!!!");
-	// private static JFrame lose_window = new JFrame();
 	private static boolean lose_window_vis = false;
 
 	/** 游戏失败 */
@@ -243,7 +234,7 @@ public class Scenes extends SimpleApplication {
 	private AudioNode audioBackground;
 	private AudioNode audioLose;
 	private AudioNode audioWin;
-
+	
 	/** 更新灯光位置和摄像机 */
 	private void updateLightCamera() {
 		// 生成旋转四元数
@@ -270,7 +261,7 @@ public class Scenes extends SimpleApplication {
 	}
 
 	DirectionalLightShadowRenderer dlsr;
-
+	
 	/** 初始化场景 */
 	private void initObjects() {
 		// 新建灯光
@@ -348,16 +339,13 @@ public class Scenes extends SimpleApplication {
 	}
 
 	public boolean opposide;
+	private float t_sec = 0f;
 
 	/** 刷新场景 */
 	@Override
 	public void simpleUpdate(float tpf) {
 		if (tpf > 0.1f)
 			tpf = 0.1f;
-
-		// // 临时代码，用于显示帧频率
-		// if (MainWindow.jLabel != null)
-		// MainWindow.jLabel.setText(Float.toString(1 / tpf));
 
 		if (this.status == ScenesStatus.PLAYING) {
 			// 根据鼠标位置刷新斜率
@@ -395,23 +383,21 @@ public class Scenes extends SimpleApplication {
 			for (ScenesObject scenesObject : objects)
 				scenesObject.timeUpdate(tpf);
 		}
-
 		else if (ball.locationZ < -0.1f && lose_window_vis == false) {
 			lose_window_vis = true;
-			/*
-			 * lose_window.setSize(300, 200);
-			 * lose_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-			 * lose_window.setLocation(400, 200);
-			 * lose_window.getContentPane().add(lose_label,
-			 * BorderLayout.CENTER); lose_window.setVisible(true);
-			 */
-
 			Program.mainWindow.game.setVisible(false);
 			Program.mainWindow.lose.setVisible(true);
 		}
-
+		
+		//分数随时间递减
+		if(score > 0){
+			t_sec += tpf;
+			if(t_sec > 0.2f){
+				t_sec = 0f;
+				score -= 1;
+			}
+		}
 		// 刷新摄像机和灯光
 		updateLightCamera();
 	}
-
 }

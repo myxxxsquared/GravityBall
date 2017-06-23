@@ -50,6 +50,8 @@ public abstract class ScenesObject {
 	/** 创建特定类型的物体 */
 	public static ScenesObject createScenesObject(String name, Scenes scenes) {
 		switch (name) {
+		case "background":
+			return new BackGround(scenes);
 		case "ground":
 			return new Ground(scenes);
 		case "wall":

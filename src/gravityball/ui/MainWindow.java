@@ -86,7 +86,7 @@ public class MainWindow extends JFrame {
 
 		// 建立和修改设置
 		settings = new AppSettings(true);
-		settings.setResolution(800, 600);
+		settings.setResolution(640, 600);
 		settings.setSamples(Program.NUMBER_SAMPLES);
 		settings.setEmulateMouse(false);
 		settings.setFrameRate(Program.FRAME_RATE);
