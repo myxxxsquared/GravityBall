@@ -657,6 +657,8 @@ public class MainWindow extends JFrame {
 
 		public WinPanel() {
 			this.setLayout(new GridBagLayout());
+			
+			// 设置组件
 			title = makeDescription("YOU WIN!!!", 35, Color.GRAY);
 			JTextArea empty1 = makeDescription("", 35, Color.GRAY);
 			description = makeDescription("", 25,
@@ -707,7 +709,7 @@ public class MainWindow extends JFrame {
 					}
 				}
 			});
-
+			
 			select_level = new ButtonPanel("SELECT LEVEL");
 			select_level.setBackground(new Color(75, 75, 49));
 			select_level.setPreferredSize(new Dimension(150, 30));
@@ -741,6 +743,7 @@ public class MainWindow extends JFrame {
 	/** 游戏全部通关的界面 */
 	public class WinFinalPanel extends JPanel {
 		JTextArea msg;
+		public JTextArea description;
 
 		// 设置背景
 		protected void paintComponent(Graphics g) {
@@ -750,9 +753,20 @@ public class MainWindow extends JFrame {
 
 		WinFinalPanel() {
 			this.setLayout(new GridBagLayout());
+			
+			// 设置组件
 			msg = makeDescription("YOU WIN", 50, Color.gray);
-
-			this.add(msg, new GBC(0, 0));
+			JTextArea empty = makeDescription("", 40, Color.GRAY);
+			description = makeDescription("", 25,
+					Color.GRAY);
+			
+			// 添加各组件到画布中
+			GridBagConstraints s = new GridBagConstraints();
+			s.gridwidth = 0;
+			s.anchor = GridBagConstraints.CENTER;
+			this.add(msg, s);
+			this.add(empty, s);
+			this.add(description, s);
 		}
 	}
 }
