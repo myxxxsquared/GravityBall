@@ -199,14 +199,17 @@ public class Scenes extends SimpleApplication {
 		audioWin.play();
 		this.status = ScenesStatus.WIN;
 		Program.mainWindow.game.setVisible(false);
-		if (Program.mainWindow.gameLevel == 5)
+		if (Program.mainWindow.gameLevel == 5) {
 			Program.mainWindow.winFinal.setVisible(true);
+			Program.mainWindow.winFinal.description
+			.setText("YOUR SCORE: " + new Integer(Program.mainWindow.totalScore + getScore()).toString());
+		}
 		else {
 			Program.mainWindow.win.setVisible(true);
 			Program.mainWindow.historyLevel = Program.mainWindow.gameLevel + 1;
+			Program.mainWindow.win.description
+					.setText("YOUR SCORE: " + new Integer(Program.mainWindow.totalScore + getScore()).toString());
 		}
-		Program.mainWindow.win.description
-				.setText("YOUR SCORE: " + new Integer(Program.mainWindow.totalScore + getScore()).toString());
 	}
 
 	private static boolean lose_window_vis = false;
