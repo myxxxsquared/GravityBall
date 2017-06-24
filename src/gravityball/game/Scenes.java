@@ -201,8 +201,12 @@ public class Scenes extends SimpleApplication {
 		Program.mainWindow.game.setVisible(false);
 		if (Program.mainWindow.gameLevel == 5)
 			Program.mainWindow.winFinal.setVisible(true);
-		else
+		else {
 			Program.mainWindow.win.setVisible(true);
+			Program.mainWindow.historyLevel = Program.mainWindow.gameLevel + 1;
+		}
+		Program.mainWindow.win.description
+				.setText("YOUR SCORE: " + new Integer(Program.mainWindow.totalScore + getScore()).toString());
 	}
 
 	private static boolean lose_window_vis = false;
@@ -394,6 +398,8 @@ public class Scenes extends SimpleApplication {
 			lose_window_vis = true;
 			Program.mainWindow.game.setVisible(false);
 			Program.mainWindow.lose.setVisible(true);
+			Program.mainWindow.lose.description
+					.setText("YOUR SCORE: " + new Integer(Program.mainWindow.totalScore + getScore()).toString());
 		}
 		
 		// 刷新摄像机和灯光
