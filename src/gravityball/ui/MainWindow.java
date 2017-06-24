@@ -124,11 +124,7 @@ public class MainWindow extends JFrame {
 		timeAction.start();
 	}
 
-	// 临时测试变量
-	boolean thisenabled = false;
-	public static JLabel jLabel;
-
-	// 临时测试函数
+	/** 读取文件 */
 	static String readall(InputStream input) {
 		StringBuffer out = new StringBuffer();
 		byte[] b = new byte[4096];
