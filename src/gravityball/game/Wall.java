@@ -150,7 +150,6 @@ public class Wall extends ScenesObject {
 
 	@Override
 	public void timeUpdate(float tpf) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
