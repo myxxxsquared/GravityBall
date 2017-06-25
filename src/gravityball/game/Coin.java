@@ -17,9 +17,10 @@ public class Coin extends ScenesObject {
 	/** 硬币的几何体 */
 	private Spatial geoCoin;
 
-	/** 刺转过的角度 */
+	/** 转过的角度 */
 	private float angle;
-
+	
+	/** 吃金币音效 */
 	private AudioNode audioEatting;
 
 	public Coin(Scenes scenes) {
@@ -41,7 +42,8 @@ public class Coin extends ScenesObject {
 		material.setFloat("Shininess", 64f);
 		material.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
 		geoCoin.setMaterial(material);
-
+		
+		// 初始化声音
 		audioEatting = new AudioNode(scenes.getAssetManager(), "Sound/coin.ogg", DataType.Buffer);
 		audioEatting.setPositional(false);
 		audioEatting.setLooping(false);
@@ -65,15 +67,15 @@ public class Coin extends ScenesObject {
 		if (eaten)
 			return;
 		ScenesBall ball = scenes.getBall();
+		
 		// 判断是否与小球相碰
 		float distence = (float) Math.sqrt((ball.locationX - this.locationX) * (ball.locationX - this.locationX)
 				+ (ball.locationY - this.locationY) * (ball.locationY - this.locationY));
 		if (distence <= ball.radius + this.radius - 0.01) {
 			// 这时候这个金币被吃掉
 			eaten = true;
+			// 分数增加100
 			scenes.addScore(100);
-			// 如何删掉这个金币？
-			// this.objNode.detachChild(geoCoin);
 			scenes.getRootNode().detachChild(this.objNode);
 			// 不能在迭代ArrayList的同时remove()
 			audioEatting.play();

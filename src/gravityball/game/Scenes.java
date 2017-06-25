@@ -202,16 +202,17 @@ public class Scenes extends SimpleApplication {
 		if (Program.mainWindow.gameLevel == 5) {
 			Program.mainWindow.winFinal.setVisible(true);
 			Program.mainWindow.winFinal.description
-			.setText("YOUR SCORE: " + new Integer(Program.mainWindow.totalScore + getScore()).toString());
+			.setText("YOUR SCORE: " + new Integer(MainWindow.totalScore + getScore()).toString());
 		}
 		else {
 			Program.mainWindow.win.setVisible(true);
 			Program.mainWindow.historyLevel = Program.mainWindow.gameLevel + 1;
 			Program.mainWindow.win.description
-					.setText("YOUR SCORE: " + new Integer(Program.mainWindow.totalScore + getScore()).toString());
+					.setText("YOUR SCORE: " + new Integer(MainWindow.totalScore + getScore()).toString());
 		}
 	}
-
+	
+	/** 显示失败界面 */
 	private static boolean lose_window_vis = false;
 
 	/** 游戏失败 */
@@ -343,12 +344,16 @@ public class Scenes extends SimpleApplication {
 		} while (c != null);
 	}
 
+	/** 反向道具标记 */
 	public boolean opposide;
+	
+	/** 每秒减5分（不为负） */
 	private float t_sec = 0f;
 
 	/** 刷新场景 */
 	@Override
 	public void simpleUpdate(float tpf) {
+		// 防跳帧
 		if (tpf > 0.1f)
 			tpf = 0.1f;
 
@@ -382,7 +387,7 @@ public class Scenes extends SimpleApplication {
 			for (ScenesObject scenesObject : objects)
 				scenesObject.timeUpdate(tpf);
 			
-			//分数随时间递减
+			// 分数随时间递减，每秒减5
 			if(MainWindow.totalScore > 0 || score > 0){
 				t_sec += tpf;
 				if(t_sec > 0.2f){
@@ -398,11 +403,12 @@ public class Scenes extends SimpleApplication {
 				scenesObject.timeUpdate(tpf);
 		}
 		else if (ball.locationZ < -0.1f && lose_window_vis == false) {
+			// 球沉入Thron内，显示失败界面
 			lose_window_vis = true;
 			Program.mainWindow.game.setVisible(false);
 			Program.mainWindow.lose.setVisible(true);
 			Program.mainWindow.lose.description
-					.setText("YOUR SCORE: " + new Integer(Program.mainWindow.totalScore + getScore()).toString());
+					.setText("YOUR SCORE: " + new Integer(MainWindow.totalScore + getScore()).toString());
 		}
 		
 		// 刷新摄像机和灯光

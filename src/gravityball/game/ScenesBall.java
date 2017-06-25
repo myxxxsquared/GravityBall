@@ -115,6 +115,7 @@ public class ScenesBall {
 
 		this.locationZ -= 0.05 * tpf;// 下落
 
+		// 转速减缓
 		this.angularVelocityX *= 0.99f;
 		this.angularVelocityY *= 0.99f;
 		this.angularVelocityZ *= 0.99f;

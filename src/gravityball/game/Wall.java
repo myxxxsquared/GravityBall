@@ -34,6 +34,7 @@ public class Wall extends ScenesObject {
 
 	private AudioNode audioBump;
 
+	/** 速度判定 */
 	public final static float MOVE_ADD_DELTA = 0.001f;
 	public final static float BUMP_SOUND_V = 0.3f;
 
@@ -159,8 +160,6 @@ public class Wall extends ScenesObject {
 		this.x2 = (float) j.getDouble("x2");
 		this.y1 = (float) j.getDouble("y1");
 		this.y2 = (float) j.getDouble("y2");
-
-		//this.e = -0.5f;
 
 		this.width = 0.01f;
 		this.height = 0.08f;

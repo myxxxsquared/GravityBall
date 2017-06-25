@@ -43,11 +43,11 @@ public class Final extends ScenesObject {
 
 	@Override
 	public void collisionDetect() {
-		// TODO Auto-generated method stub
 		ScenesBall ball = scenes.getBall();
-		//判断是否与小球相碰
+		// 判断是否与小球相碰
 		float distence = (float) Math.sqrt((ball.locationX-this.locationX)*(ball.locationX-this.locationX) + 
 				(ball.locationY-this.locationY)*(ball.locationY-this.locationY));
+		// 过关条件
 		if(distence <= ball.radius + 0.01){
 			this.scenes.gameWin();
 		}

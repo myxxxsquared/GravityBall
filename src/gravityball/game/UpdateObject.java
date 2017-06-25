@@ -14,16 +14,20 @@ public class UpdateObject extends ScenesObject {
 	/** 位置和半径 */
 	private float locationX, locationY, radius;
 
-	/** 硬币的几何体 */
+	/** 道具的几何体 */
 	private Spatial geoUpdate;
 
-	/** 刺转过的角度 */
+	/** 转过的角度 */
 	private float angle;
 
 	private AudioNode audioEatting;
 
 	/**
-	 * 道具类型 1 弹性增强3.0 2 体积缩小 3 g减小 4 操作颠倒
+	 * 道具类型 
+	 * 1 弹性增强3.0 
+	 * 2 体积缩小 
+	 * 3 g减小 
+	 * 4 操作颠倒
 	 */
 	private int type;
 
@@ -46,7 +50,6 @@ public class UpdateObject extends ScenesObject {
 		material.setFloat("Shininess", 64f);
 		material.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
 		geoUpdate.setMaterial(material);
-		// geoCoin.setLocalScale(-1.f);
 
 		audioEatting = new AudioNode(scenes.getAssetManager(), "Sound/up.ogg", DataType.Buffer);
 		audioEatting.setPositional(false);
@@ -64,6 +67,7 @@ public class UpdateObject extends ScenesObject {
 		this.objNode.attachChild(geoUpdate);
 	}
 
+	/** 标记被吃掉 */
 	private boolean eaten;
 
 	@Override
@@ -79,30 +83,32 @@ public class UpdateObject extends ScenesObject {
 			eaten = true;
 			switch (type) {
 			case 1: {
+				// 弹性增强，球变成黄色
 				Wall.e = -3.0f;
 				ball.sphereMat.setColor("Diffuse", ColorRGBA.Yellow);
 				ball.sphereMat.setColor("Ambient", ColorRGBA.Yellow);
 				break;
 			}
 			case 2: {
+				// 球的体积缩小，相应的质量也减少(为了运动效果，非成比例)
 				ball.mass *= 0.5;
 				ball.radius *= 0.5;
 				ball.locationZ *= 0.5;
 				break;
 			}
 			case 3: {
+				// g减小，球变成灰色
 				ball.g *= 0.5;
 				ball.sphereMat.setColor("Diffuse", ColorRGBA.Gray);
 				ball.sphereMat.setColor("Ambient", ColorRGBA.Gray);
 				break;
 			}
 			case 4: {
+				// 操作颠倒
 				scenes.opposide = true;
 				break;
 			}
 			}
-			// 如何删掉这个金币？
-			// this.objNode.detachChild(geoCoin);
 			scenes.getRootNode().detachChild(this.objNode);
 			// 不能在迭代ArrayList的同时remove()
 			audioEatting.play();
@@ -110,32 +116,37 @@ public class UpdateObject extends ScenesObject {
 
 	}
 
+	/** 用于道具效果的恢复 */
 	private float eaten_time;
 	private boolean restore;
 
 	@Override
 	public void timeUpdate(float tpf) {
 		if (eaten && !restore) {
+			// 道具效果持续15s，15s后恢复正常
 			if (eaten_time > 15f) {
 				ScenesBall ball = scenes.getBall();
 				switch (type) {
 				case 1: {
+					// 恢复弹性和球的颜色
 					Wall.e = -0.5f;
 					ball.sphereMat.setColor("Diffuse", ColorRGBA.White);
 					ball.sphereMat.setColor("Ambient", ColorRGBA.White);
 					break;
 				}
 				case 2: {
-					// ball.radius *= 2;
+					// ball.radius *= 2; 球的大小不恢复，防止卡住
 					break;
 				}
 				case 3: {
+					// 恢复g和球的颜色
 					ball.g *= 2;
 					ball.sphereMat.setColor("Diffuse", ColorRGBA.White);
 					ball.sphereMat.setColor("Ambient", ColorRGBA.White);
 					break;
 				}
 				case 4: {
+					// 恢复操作颠倒
 					scenes.opposide = false;
 					break;
 				}
@@ -147,7 +158,7 @@ public class UpdateObject extends ScenesObject {
 		}
 		if (eaten)
 			return;
-		// 转过一个小角度
+		// 转过一个小角度(未被吃掉时)
 		angle += tpf * 1.f;
 		geoUpdate.setLocalRotation(new Quaternion(new float[] { 0.f, 0.f, angle }));
 	}
@@ -160,6 +171,7 @@ public class UpdateObject extends ScenesObject {
 		this.radius = (float) j.getDouble("radius");
 		this.eaten_time = 0;
 		this.restore = false;
+		// 道具的类型是一个 1~4的随机整数
 		this.type = (int) (Math.random() * 3.99) + 1;
 	}
 

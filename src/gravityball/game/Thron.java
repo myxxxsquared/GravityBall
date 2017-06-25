@@ -61,6 +61,7 @@ public class Thron extends ScenesObject {
 		}
 	}
 	
+	/** 与引力相关的系数 */
 	public final float MG = 0.015f;
 
 	@Override
@@ -70,6 +71,7 @@ public class Thron extends ScenesObject {
 		angle += tpf * 0.5f;
 		geoThron.setLocalRotation(new Quaternion(new float[] { 0.f, 0.f, angle }));
 		
+		// 对距离较近的球有一个吸引力
 		float distence = (float) Math.sqrt((ball.locationX - this.locationX) * (ball.locationX - this.locationX)
 				+ (ball.locationY - this.locationY) * (ball.locationY - this.locationY));
 		if (distence <= this.radius*5 && distence >this.radius + 0.01) {
