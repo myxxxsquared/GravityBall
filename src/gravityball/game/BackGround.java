@@ -20,13 +20,8 @@ public class BackGround extends ScenesObject {
 		Geometry geometry = new Geometry("BackGround", box);
 
 		// 初始化素材
-		Material material = new Material(scenes.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
-		material.setTexture("DiffuseMap", scenes.getAssetManager().loadTexture("Textures/star.jpg"));
-		material.setBoolean("UseMaterialColors", true);
-		material.setColor("Diffuse", ColorRGBA.White);
-		material.setColor("Specular", ColorRGBA.White);
-		material.setColor("Ambient", new ColorRGBA(1.5f, 1.5f, 1.5f, 1.f));
-		//material.setFloat("Shininess", 64f);
+		Material material = new Material(scenes.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+		material.setTexture("ColorMap", scenes.getAssetManager().loadTexture("Textures/star.jpg"));
 		geometry.setMaterial(material);
 
 		// 更新几何体位置
